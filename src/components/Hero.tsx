@@ -7,7 +7,6 @@ const Hero: React.FC = () => {
     <AnimatedSection
       id="hero"
       className="hero"
-      style={{ backgroundImage: 'c' }}
     >
       <h1>PHAN QUANG THAI</h1>
       <p>PHP Developer | Laravel & CakePHP Expert</p>

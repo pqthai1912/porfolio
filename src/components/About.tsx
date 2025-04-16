@@ -11,7 +11,7 @@ const About: React.FC = () => {
         development, specializing in Laravel and CakePHP. Proven ability to
         build scalable web applications and solve performance issues.
       </p>
-      <img className="profile-img" src="/avatar.jpg" alt="Phan Quang Thai" />
+      <img className="profile-img" src="avatar.jpg" alt="Phan Quang Thai" />
     </AnimatedSection>
   );
 };
