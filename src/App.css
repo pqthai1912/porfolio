@@ -1,0 +1,18 @@
+.scroll-container {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+/* Hidden scrollbar for Chrome, Safari, Opera */
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Apply scroll-snap-align: start to all child elements */
+.scroll-container>* {
+  scroll-snap-align: start;
+  height: 100vh;
+}

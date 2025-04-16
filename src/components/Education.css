@@ -1,0 +1,33 @@
+.education {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 4rem 2rem;
+    background-color: #fff;
+    text-align: center;
+}
+
+.education h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.education-item {
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.education-item .period {
+    font-style: italic;
+    color: #555;
+    margin-bottom: 0.5rem;
+}
+
+.education-item p {
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}

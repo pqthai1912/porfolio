@@ -1,0 +1,31 @@
+.certifications {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 2rem;
+    background-color: #f2f2f2;
+    text-align: center;
+    min-height: 100vh;
+}
+
+.certifications h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.cert-list {
+    list-style: disc;
+    margin: 1rem auto;
+    max-width: 600px;
+    text-align: left;
+    padding: 0;
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.cert-list li {
+    margin-bottom: 0.5rem;
+}

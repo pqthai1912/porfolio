@@ -1,0 +1,117 @@
+/* src/components/Header.css */
+
+/* Container chính của header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: #1a1a1a;
+    color: #fff;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+/* Logo */
+.logo a {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Desktop Navigation */
+.nav-desktop {
+    display: block;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #ddd;
+}
+
+.mobile-menu-icon {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2000;
+    cursor: pointer;
+}
+
+/* Mobile Navigation Overlay */
+.nav-mobile {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 75%;
+    height: 100%;
+    background: #1a1a1a;
+    z-index: 1500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: slideIn 0.3s ease-in-out;
+}
+
+.mobile-nav-links {
+    list-style: none;
+    text-align: center;
+    padding: 0;
+}
+
+.mobile-nav-links li {
+    margin: 1rem 0;
+}
+
+.mobile-nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+.mobile-nav-links a:hover {
+    color: #ddd;
+}
+
+/* Animation keyframes cho slide in */
+@keyframes slideIn {
+    from {
+        right: -75%;
+    }
+
+    to {
+        right: 0;
+    }
+}
+
+/* Responsive: Khi màn hình nhỏ hơn 600px */
+@media (max-width: 600px) {
+
+    /* Ẩn navigation trên desktop */
+    .nav-desktop {
+        display: none;
+    }
+
+    /* Hiển thị icon hamburger */
+    .mobile-menu-icon {
+        display: block;
+    }
+}
