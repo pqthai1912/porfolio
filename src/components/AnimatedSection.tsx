@@ -4,7 +4,6 @@ import { useInView } from "react-intersection-observer";
 
 interface AnimatedSectionProps {
   children: ReactNode;
-  id?: string;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -20,13 +19,11 @@ interface AnimatedSectionProps {
  * `useInView` hook from `react-intersection-observer`.
  *
  * @param children - The children of the component.
- * @param id - The id of the component.
  * @param className - The class name of the component.
  * @param style - The style of the component.
  */
 const AnimatedSection: React.FC<AnimatedSectionProps> = ({
   children,
-  id,
   className,
   style,
 }) => {
@@ -78,7 +75,6 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({
       animate={controls}
       initial="hidden"
       variants={variants}
-      id={id}
       className={className}
       style={style}
     >

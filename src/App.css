@@ -1,9 +1,39 @@
-.scroll-container {
+.app {
+  position: relative;
+  overflow: hidden;
   height: 100vh;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
+  width: 100vw;
+  transition: opacity 0.5s ease;
+}
+
+/* Loading state transitions */
+.app.loading {
+  opacity: 0;
+}
+
+.app.loaded {
+  opacity: 1;
+}
+
+.scroll-container {
+  overflow-y: auto;
   scrollbar-width: none;
   /* Firefox */
+  height: 100vh;
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+  overflow-x: hidden;
+  -ms-overflow-style: none;
+  /* IE and Edge */
+}
+
+/* Thêm CSS cụ thể cho Footer trong scroll-container */
+.scroll-container>.footer {
+  scroll-snap-align: none;
+  min-height: auto;
+  height: auto;
+  padding-top: 60px;
+  padding-bottom: 24px;
 }
 
 /* Hidden scrollbar for Chrome, Safari, Opera */
@@ -11,8 +41,118 @@
   display: none;
 }
 
-/* Apply scroll-snap-align: start to all child elements */
-.scroll-container>* {
-  scroll-snap-align: start;
+/* Apply snap effect for sections with enhanced transitions */
+.scroll-container>section {
   height: 100vh;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  padding-top: 70px;
+  /* Account for header height */
+  scroll-snap-align: start;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+
+  /* Enhanced transitions */
+  transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1),
+    opacity 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Hide scrollbars on section content */
+.scroll-container>section::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-container>section {
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+}
+
+/* Ensure sections have IDs for scroll targeting */
+section {
+  scroll-margin-top: 52px;
+  /* Add scroll margin to account for fixed header */
+}
+
+/* Fade in animation for sections as they come into view */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.scroll-container>section>* {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+:root {
+  --apple-black: #1d1d1f;
+  --apple-white: #f5f5f7;
+  --apple-blue: #0071e3;
+  --apple-gray: #86868b;
+  --apple-light-gray: #f5f5f7;
+  --apple-font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+  --section-padding: 120px 20px;
+  --container-width: 1200px;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.section-title {
+  font-size: 3rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.section-subtitle {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--apple-gray);
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 3rem;
+}
+
+.btn {
+  display: inline-block;
+  background-color: var(--apple-blue);
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 980px;
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 17px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn:hover {
+  background-color: #0077ed;
+  transform: scale(1.02);
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #007aff, #5856d6, #ff2d55);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

@@ -1,5 +1,5 @@
 // src/App.tsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -10,13 +10,60 @@ import Certifications from "./components/Certifications";
 import Education from "./components/Education";
 // import Contact from "./components/Contact";
 import ContactMe from "./components/ContactMe";
-import Footer from "./components/Footer";
+// Footer now included in ContactMe
+import { env } from "./utils/env";
+import "./App.css";
 
 const App: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Handle initial loading transition
+  useEffect(() => {
+    // Add a slight delay to ensure smooth initial loading
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 300);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Handle initial URL hash on page load
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+      // Slight delay to ensure components are mounted
+      setTimeout(() => {
+        const element = document.getElementById(hash);
+        if (element) {
+          // Use scrollIntoView for consistency with navigation
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 500); // Longer delay to ensure proper rendering
+    }
+  }, []);
+
+  // Preload key images for smoother experience
+  useEffect(() => {
+    const preloadImages = () => {
+      const imagesToPreload = [
+        '/background.jpeg',
+        '/avatar.jpg',
+        '/sunset.jpg'
+      ];
+      
+      imagesToPreload.forEach(imagePath => {
+        const img = new Image();
+        img.src = env.PUBLIC_URL + imagePath;
+      });
+    };
+    
+    preloadImages();
+  }, []);
+
   return (
-    <div>
+    <div className={`app ${isLoading ? 'loading' : 'loaded'}`}>
       <Header />
-      <div className="scroll-container">
+      <main className="scroll-container">
         <Hero />
         <About />
         <Projects />
@@ -26,9 +73,9 @@ const App: React.FC = () => {
         <Education />
         {/* <Contact /> */}
         <ContactMe />
-      </div>
-      <Footer />
+      </main>
     </div>
   );
 };
+
 export default App;

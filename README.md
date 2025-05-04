@@ -52,3 +52,31 @@ export default tseslint.config({
   },
 })
 ```
+
+## Environment Variables
+
+This project uses environment variables for configuration. The variables are loaded from `.env` files during development, but for production deployment (especially on GitHub Pages), we use default values stored in the codebase.
+
+### Configuration
+
+The project uses the following environment variables:
+
+- `VITE_EMAILJS_SERVICE_ID`: EmailJS service ID
+- `VITE_EMAILJS_TEMPLATE_ID`: EmailJS template ID
+- `VITE_EMAILJS_PUBLIC_KEY`: EmailJS public key
+
+### Setting Up Environment Variables
+
+1. For local development, create a `.env` file in the root directory with the following format:
+
+```
+VITE_EMAILJS_SERVICE_ID=your_service_id
+VITE_EMAILJS_TEMPLATE_ID=your_template_id
+VITE_EMAILJS_PUBLIC_KEY=your_public_key
+```
+
+2. For production, the default values from `src/config/env.defaults.ts` will be used if environment variables are not available.
+
+### GitHub Pages Deployment
+
+When deploying to GitHub Pages, the application will use the default values defined in `src/config/env.defaults.ts`. This allows the app to function correctly even though the `.env` files are not included in the repository.
