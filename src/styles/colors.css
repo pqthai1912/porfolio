@@ -1,0 +1,15 @@
+:root {
+    /* Màu cơ bản */
+    --apple-black: #1d1d1f;
+    --apple-white: #f5f5f7;
+    --apple-gray: #86868b;
+    --apple-light-gray: #f5f5f7;
+
+    /* Màu gradient header */
+    --header-gradient-start: #3a1c7f;
+    --header-gradient-end: #4a56b5;
+
+    /* Màu button mới */
+    --button-bg: linear-gradient(90deg, var(--header-gradient-start), var(--header-gradient-end));
+    --button-hover-shadow: 0 6px 15px rgba(58, 28, 127, 0.4);
+}

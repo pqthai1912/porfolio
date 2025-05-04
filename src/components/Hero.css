@@ -91,33 +91,33 @@
 }
 
 .btn-primary {
-    background: var(--apple-blue);
+    background: var(--button-bg);
     color: #fff;
     padding: 15px 28px;
     font-size: 18px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.2);
+    box-shadow: 0 4px 12px rgba(58, 28, 127, 0.2);
+    border: none;
 }
 
 .btn-primary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 16px rgba(0, 113, 227, 0.3);
-    background-color: #0077ed;
+    box-shadow: var(--button-hover-shadow);
 }
 
 .btn-secondary {
     background: transparent;
-    color: var(--apple-blue);
-    border: 1px solid var(--apple-blue);
+    color: var(--header-gradient-end);
+    border: 1px solid var(--header-gradient-end);
     padding: 15px 28px;
     font-size: 18px;
     transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-    background-color: rgba(0, 113, 227, 0.05);
+    background-color: rgba(58, 28, 127, 0.05);
     transform: translateY(-3px);
-    border-color: #0077ed;
+    border-color: var(--header-gradient-start);
 }
 
 .hero-image {

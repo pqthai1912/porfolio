@@ -11,7 +11,10 @@
 }
 
 .contact-headline h6 {
-    color: var(--apple-blue);
+    background: var(--button-bg);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
     font-size: 16px;
     text-transform: uppercase;
     letter-spacing: 1.2px;
@@ -61,9 +64,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(0, 113, 227, 0.1);
+    background: rgba(58, 28, 127, 0.1);
     border-radius: 50%;
-    color: var(--apple-blue);
+    color: var(--header-gradient-end);
 }
 
 .contact-icon svg {
@@ -86,7 +89,7 @@
 }
 
 .contact-info-content a:hover {
-    color: var(--apple-blue);
+    color: var(--header-gradient-end);
 }
 
 .contact-form {
@@ -126,8 +129,8 @@
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: var(--apple-blue);
-    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.2);
+    border-color: var(--header-gradient-end);
+    box-shadow: 0 0 0 3px rgba(58, 28, 127, 0.2);
 }
 
 .contact-form .btn {

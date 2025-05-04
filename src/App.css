@@ -107,6 +107,14 @@ section {
   --apple-font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
   --section-padding: 120px 20px;
   --container-width: 1200px;
+
+  /* Màu gradient header */
+  --header-gradient-start: #3a1c7f;
+  --header-gradient-end: #4a56b5;
+
+  /* Màu button mới */
+  --button-bg: linear-gradient(90deg, var(--header-gradient-start), var(--header-gradient-end));
+  --button-hover-shadow: 0 6px 15px rgba(58, 28, 127, 0.4);
 }
 
 .container {
@@ -134,7 +142,7 @@ section {
 
 .btn {
   display: inline-block;
-  background-color: var(--apple-blue);
+  background: var(--button-bg);
   color: #fff;
   padding: 12px 22px;
   border-radius: 980px;
@@ -142,12 +150,14 @@ section {
   font-weight: 400;
   font-size: 17px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
+  border: none;
+  box-shadow: 0 4px 12px rgba(58, 28, 127, 0.2);
 }
 
 .btn:hover {
-  background-color: #0077ed;
-  transform: scale(1.02);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--button-hover-shadow);
 }
 
 .text-gradient {
