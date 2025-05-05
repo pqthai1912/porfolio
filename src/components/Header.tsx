@@ -22,6 +22,25 @@ const Header: React.FC = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Kiểm tra hash trong URL khi load trang
+  useEffect(() => {
+    // Lấy hash từ URL (loại bỏ dấu #)
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+      // Đặt menu active dựa trên hash
+      setActiveSection(hash);
+      
+      // Đồng thời scroll đến phần tương ứng
+      const element = document.getElementById(hash);
+      if (element) {
+        // Sử dụng timeout nhỏ để đảm bảo DOM đã render xong
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'auto' });
+        }, 100);
+      }
+    }
+  }, []); // Chỉ chạy một lần khi component mount
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
