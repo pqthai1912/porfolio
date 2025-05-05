@@ -8,6 +8,9 @@ const Header: React.FC = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const typingRef = useRef<HTMLDivElement>(null);
+  const lastUpdatedHash = useRef<string>('home');
+  // Add a flag to prevent scroll handling during programmatic scrolls
+  const isScrollingProgrammatically = useRef<boolean>(false);
 
   // Check if device is mobile
   useEffect(() => {
@@ -49,25 +52,31 @@ const Header: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Kiểm tra hash trong URL khi load trang
+  // Check hash in URL when loading page
   useEffect(() => {
-    // Lấy hash từ URL (loại bỏ dấu #)
+    // Get hash from URL (remove #)
     const hash = window.location.hash.replace('#', '');
     if (hash) {
-      // Đặt menu active dựa trên hash
+      // Set active menu based on hash
       setActiveSection(hash);
+      lastUpdatedHash.current = hash;
       
-      // Đồng thời scroll đến phần tương ứng
+      // Scroll to corresponding section
       const element = document.getElementById(hash);
       if (element) {
-        // Sử dụng timeout nhỏ để đảm bảo DOM đã render xong
+        // Small timeout to ensure DOM has rendered
         setTimeout(() => {
+          isScrollingProgrammatically.current = true;
           element.scrollIntoView({ behavior: 'auto' });
+          setTimeout(() => {
+            isScrollingProgrammatically.current = false;
+          }, 100);
         }, 100);
       }
     }
-  }, []); // Chỉ chạy một lần khi component mount
+  }, []); // Run once when component mounts
 
+  // Improved scroll handler with better section detection
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -76,29 +85,69 @@ const Header: React.FC = () => {
         setIsScrolled(false);
       }
       
-      // Don't update active section during transitions
-      if (isTransitioning) return;
+      // Don't update active section during transitions or programmatic scrolls
+      if (isTransitioning || isScrollingProgrammatically.current) return;
       
       const sections = [
         'home', 'about', 'projects', 'skills', 
         'experience', 'education', 'certifications', 'contact'
       ];
       
-      const current = sections.find(section => {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          return rect.top <= 100 && rect.bottom >= 100;
-        }
-        return false;
-      }) || 'home';
+      // Find which section is most visible in viewport
+      let maxVisibleSection = { id: 'home', visiblePixels: 0 };
       
-      setActiveSection(current);
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (!element) continue;
+        
+        const rect = element.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        
+        // Calculate how many pixels of this section are visible in viewport
+        const visibleTop = Math.max(0, rect.top);
+        const visibleBottom = Math.min(viewportHeight, rect.bottom);
+        const visiblePixels = Math.max(0, visibleBottom - visibleTop);
+        
+        // Special case for sections at the top of the page
+        if (rect.top <= 100 && rect.top > -100) {
+          // If section is close to top, prioritize it
+          if (visiblePixels > maxVisibleSection.visiblePixels || 
+              (section === 'home' && rect.top >= 0)) {
+            maxVisibleSection = { id: section, visiblePixels };
+          }
+        } 
+        // Normal case - whichever section has most pixels visible
+        else if (visiblePixels > maxVisibleSection.visiblePixels) {
+          maxVisibleSection = { id: section, visiblePixels };
+        }
+      }
+      
+      if (maxVisibleSection.id !== activeSection) {
+        setActiveSection(maxVisibleSection.id);
+        
+        // Update URL hash when section changes
+        if (maxVisibleSection.id !== lastUpdatedHash.current) {
+          lastUpdatedHash.current = maxVisibleSection.id;
+          window.history.replaceState(null, '', `#${maxVisibleSection.id}`);
+        }
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isTransitioning]);
+    // Add throttled scroll handler for better performance
+    let ticking = false;
+    const scrollListener = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', scrollListener);
+    return () => window.removeEventListener('scroll', scrollListener);
+  }, [activeSection, isTransitioning]);
 
   // Listen for hash changes
   useEffect(() => {
@@ -106,6 +155,7 @@ const Header: React.FC = () => {
       const hash = window.location.hash.replace('#', '');
       if (hash) {
         setActiveSection(hash);
+        lastUpdatedHash.current = hash;
       }
     };
 
@@ -128,6 +178,7 @@ const Header: React.FC = () => {
     
     // Set active section immediately for better UX
     setActiveSection(sectionId);
+    lastUpdatedHash.current = sectionId;
     
     // Close mobile menu if open
     if (menuOpen) setMenuOpen(false);
@@ -138,12 +189,16 @@ const Header: React.FC = () => {
     // Get element and scroll directly to it
     const targetElement = document.getElementById(sectionId);
     if (targetElement) {
+      // Prevent scroll handler from triggering during programmatic scroll
+      isScrollingProgrammatically.current = true;
+      
       // Use scrollIntoView for better snap effect
       targetElement.scrollIntoView({ behavior: 'smooth' });
       
       // Reset transitioning state after animation completes
       setTimeout(() => {
         setIsTransitioning(false);
+        isScrollingProgrammatically.current = false;
       }, 800); // Slightly longer than transition duration
     } else {
       setIsTransitioning(false);
@@ -220,20 +275,20 @@ const Header: React.FC = () => {
             </li>
             <li className="mobile-hide">
               <a 
-                href="#education" 
-                className={activeSection === 'education' ? 'active' : ''}
-                onClick={(e) => handleNavClick('education', e)}
-              >
-                Education
-              </a>
-            </li>
-            <li className="mobile-hide">
-              <a 
                 href="#certifications" 
                 className={activeSection === 'certifications' ? 'active' : ''}
                 onClick={(e) => handleNavClick('certifications', e)}
               >
                 Certifications
+              </a>
+            </li>
+            <li className="mobile-hide">
+              <a 
+                href="#education" 
+                className={activeSection === 'education' ? 'active' : ''}
+                onClick={(e) => handleNavClick('education', e)}
+                >
+                Education
               </a>
             </li>
             <li>
@@ -259,7 +314,7 @@ const Header: React.FC = () => {
                   </svg>
                 </span>
                 <span className="text-container">
-                  <span className="text typing-animation" ref={typingRef}>Contact</span>
+                  <span className={`text ${isMobile ? '' : 'typing-animation'}`} ref={isMobile ? null : typingRef}>Contact</span>
                 </span>
               </a>
             </li>
