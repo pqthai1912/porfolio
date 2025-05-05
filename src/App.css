@@ -21,10 +21,12 @@
   /* Firefox */
   height: 100vh;
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
+  scroll-snap-type: y proximity;
   overflow-x: hidden;
   -ms-overflow-style: none;
   /* IE and Edge */
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 }
 
 /* Thêm CSS cụ thể cho Footer trong scroll-container */
@@ -96,6 +98,24 @@ section {
 
 .scroll-container>section>* {
   animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+  .scroll-container {
+    scroll-snap-type: y proximity;
+    height: 100%;
+    overflow-y: scroll;
+    position: relative;
+  }
+
+  .scroll-container>section {
+    height: auto;
+    min-height: 100vh;
+    scroll-snap-align: start;
+    padding-bottom: 40px;
+    overflow-y: visible;
+  }
 }
 
 :root {

@@ -1,0 +1,55 @@
+/**
+ * Cải thiện trải nghiệm cuộn và touch trên thiết bị di động
+ */
+
+/* Tối ưu hóa xử lý scroll-snap */
+@media (max-width: 768px) {
+    body {
+        touch-action: pan-y;
+    }
+
+    .scroll-container {
+        height: 100vh;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: y proximity;
+        scroll-behavior: smooth;
+    }
+
+    .scroll-container>section {
+        scroll-snap-align: start;
+        height: auto;
+        min-height: 100vh;
+        overflow-y: visible;
+    }
+
+    /* Vô hiệu hóa scroll-snap cho các phần tử cần cuộn nội bộ */
+    .education,
+    .projects,
+    .skills,
+    .experience,
+    .certifications {
+        overflow-y: visible;
+        scroll-snap-align: none;
+        padding-bottom: 50px;
+    }
+
+    /* Tối ưu hóa touch trên các vùng chứa có thể tương tác */
+    .form-group input,
+    .form-group textarea,
+    button,
+    a {
+        touch-action: manipulation;
+    }
+}
+
+/* Xử lý các vấn đề iOS cụ thể */
+@supports (-webkit-touch-callout: none) {
+    .scroll-container {
+        height: -webkit-fill-available;
+    }
+
+    .scroll-container>section {
+        min-height: -webkit-fill-available;
+    }
+}

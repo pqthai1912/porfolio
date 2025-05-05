@@ -1,5 +1,5 @@
 // src/App.tsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -16,6 +16,7 @@ import "./App.css";
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Handle initial loading transition
   useEffect(() => {
@@ -42,6 +43,39 @@ const App: React.FC = () => {
     }
   }, []);
 
+  // Cải thiện xử lý sự kiện touch cho thiết bị di động
+  useEffect(() => {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    
+    if (isMobile && scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      
+      // Xử lý touchmove để đảm bảo nội dung có thể cuộn
+      const handleTouchMove = (e: TouchEvent) => {
+        // Chỉ ngăn chặn sự kiện mặc định nếu cần thiết
+        if (container.scrollHeight <= container.clientHeight) {
+          e.preventDefault();
+        }
+      };
+      
+      // Xử lý wheel để ngăn chặn các hiệu ứng cuộn mặc định gây xung đột
+      const handleWheel = (e: WheelEvent) => {
+        // Tùy chỉnh hành vi cuộn nếu cần
+        if (Math.abs(e.deltaY) > 0) {
+          container.scrollTop += e.deltaY;
+        }
+      };
+      
+      container.addEventListener('touchmove', handleTouchMove, { passive: false });
+      container.addEventListener('wheel', handleWheel, { passive: false });
+      
+      return () => {
+        container.removeEventListener('touchmove', handleTouchMove);
+        container.removeEventListener('wheel', handleWheel);
+      };
+    }
+  }, []);
+
   // Preload key images for smoother experience
   useEffect(() => {
     const preloadImages = () => {
@@ -63,7 +97,7 @@ const App: React.FC = () => {
   return (
     <div className={`app ${isLoading ? 'loading' : 'loaded'}`}>
       <Header />
-      <main className="scroll-container">
+      <main className="scroll-container" ref={scrollContainerRef}>
         <Hero />
         <About />
         <Projects />
