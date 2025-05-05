@@ -70,6 +70,7 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
+      // Update header style based on scroll position
       if (window.scrollY > 50) {
         setIsScrolled(true);
       } else {
@@ -84,34 +85,110 @@ const Header: React.FC = () => {
         'experience', 'education', 'certifications', 'contact'
       ];
       
-      const current = sections.find(section => {
+      // Find the section that takes up the most space in the viewport
+      let maxVisibleSection = null;
+      let maxVisibleHeight = 0;
+      
+      sections.forEach(section => {
         const element = document.getElementById(section);
         if (element) {
           const rect = element.getBoundingClientRect();
-          return rect.top <= 100 && rect.bottom >= 100;
+          
+          // Calculate how much of the section is visible in the viewport
+          const visibleTop = Math.max(0, rect.top);
+          const visibleBottom = Math.min(window.innerHeight, rect.bottom);
+          const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+          
+          // If this section has more visible area than previous sections
+          if (visibleHeight > maxVisibleHeight) {
+            maxVisibleHeight = visibleHeight;
+            maxVisibleSection = section;
+          }
+          
+          // Special case for sections at the top of the page (e.g., home)
+          if (rect.top <= 0 && rect.bottom > window.innerHeight / 2) {
+            maxVisibleSection = section;
+            maxVisibleHeight = Infinity; // Prioritize this section
+          }
         }
-        return false;
-      }) || 'home';
+      });
       
-      setActiveSection(current);
+      // If we found a visible section, update active section
+      if (maxVisibleSection && maxVisibleSection !== activeSection) {
+        setActiveSection(maxVisibleSection);
+        
+        // Update URL hash without triggering scroll
+        if (window.location.hash !== `#${maxVisibleSection}`) {
+          window.history.replaceState(null, '', `#${maxVisibleSection}`);
+        }
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isTransitioning]);
+    // Throttle the scroll event to improve performance
+    let lastScrollTime = 0;
+    const scrollThrottleDelay = 100; // ms
+    
+    const throttledScrollHandler = () => {
+      const now = Date.now();
+      if (now - lastScrollTime >= scrollThrottleDelay) {
+        lastScrollTime = now;
+        handleScroll();
+      }
+    };
 
-  // Listen for hash changes
+    window.addEventListener('scroll', throttledScrollHandler);
+    
+    // Also check on initial mount and on resize
+    handleScroll();
+    window.addEventListener('resize', handleScroll);
+    
+    return () => {
+      window.removeEventListener('scroll', throttledScrollHandler);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, [isTransitioning, activeSection]); // Add activeSection as dependency
+
+  // Listen for hash changes from direct URL entry or history navigation
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '');
       if (hash) {
+        // If hash changes from outside the component (e.g. browser back/forward)
+        // Update active section
         setActiveSection(hash);
+        
+        // Only scroll if the hash change wasn't initiated by our scroll handler
+        if (!isTransitioning) {
+          const element = document.getElementById(hash);
+          if (element) {
+            // Set transitioning to prevent scroll handler from overriding
+            setIsTransitioning(true);
+            
+            // Calculate scroll position (accounting for header height)
+            const headerElement = document.querySelector('.header') as HTMLElement;
+            const headerHeight = headerElement ? headerElement.offsetHeight : 0;
+            const targetPosition = element.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+            
+            // Use smooth scrolling
+            window.scrollTo({
+              top: targetPosition,
+              behavior: 'smooth'
+            });
+            
+            // Reset transitioning state after animation completes
+            setTimeout(() => {
+              setIsTransitioning(false);
+            }, 800);
+          } else {
+            setIsTransitioning(false);
+          }
+        }
       }
     };
 
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
+  }, [isTransitioning]);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -138,8 +215,16 @@ const Header: React.FC = () => {
     // Get element and scroll directly to it
     const targetElement = document.getElementById(sectionId);
     if (targetElement) {
-      // Use scrollIntoView for better snap effect
-      targetElement.scrollIntoView({ behavior: 'smooth' });
+      // Calculate scroll position (accounting for header height)
+      const headerElement = document.querySelector('.header') as HTMLElement;
+      const headerHeight = headerElement ? headerElement.offsetHeight : 0;
+      const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+      
+      // Use smooth scrolling
+      window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
+      });
       
       // Reset transitioning state after animation completes
       setTimeout(() => {
