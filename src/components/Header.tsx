@@ -29,6 +29,7 @@ const Header: React.FC = () => {
       if (typingRef.current) {
         // Reset the animation by removing and adding the class
         typingRef.current.style.animation = 'none';
+        typingRef.current.style.width = '0'; // Reset width explicitly
         setTimeout(() => {
           if (typingRef.current) {
             typingRef.current.style.animation = '';

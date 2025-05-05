@@ -160,6 +160,7 @@
     min-height: 36px;
     vertical-align: middle;
     height: auto;
+    min-width: 100px;
 }
 
 .contact-link:hover {
@@ -187,11 +188,13 @@
     display: flex;
     align-items: center;
     line-height: 1;
+    width: 65px;
+    overflow: hidden;
 }
 
 .contact-link .text {
     display: inline-block;
-    width: fit-content;
+    width: 100%;
     white-space: nowrap;
 }
 
@@ -204,16 +207,18 @@
     border-right: 2px solid rgba(255, 255, 255, 0.75);
     display: inline-block;
     vertical-align: middle;
+    position: absolute;
+    left: 0;
 }
 
 /* Animation for typing effect */
 @keyframes typing {
     from {
-        width: 0
+        width: 0;
     }
 
     to {
-        width: 100%
+        width: 65px;
     }
 }
 
@@ -478,6 +483,7 @@
     .nav-links a.contact-link {
         padding: 8px 16px !important;
         height: 36px;
+        min-width: 90px;
     }
 
     .contact-link .icon svg {
@@ -489,15 +495,25 @@
         font-size: 14px;
     }
 
+    .contact-link .text-container {
+        width: 55px;
+        overflow: hidden;
+    }
+
     .contact-link .typing-animation {
         animation: none;
-        width: auto;
+        width: 55px;
         border-right: none;
     }
 
-    .contact-link .text {
-        opacity: 1;
-        visibility: visible;
+    @keyframes typing {
+        from {
+            width: 0;
+        }
+
+        to {
+            width: 55px;
+        }
     }
 }
 
