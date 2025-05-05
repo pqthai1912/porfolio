@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Header.css';
 
 const Header: React.FC = () => {
@@ -7,6 +7,7 @@ const Header: React.FC = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const typingRef = useRef<HTMLDivElement>(null);
 
   // Check if device is mobile
   useEffect(() => {
@@ -20,6 +21,31 @@ const Header: React.FC = () => {
     // Add listener for resize
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Reset typing animation periodically
+  useEffect(() => {
+    const resetTyping = () => {
+      if (typingRef.current) {
+        // Reset the animation by removing and adding the class
+        typingRef.current.style.animation = 'none';
+        setTimeout(() => {
+          if (typingRef.current) {
+            typingRef.current.style.animation = '';
+            typingRef.current.classList.remove('typing-animation');
+            void typingRef.current.offsetWidth; // Trigger reflow
+            typingRef.current.classList.add('typing-animation');
+          }
+        }, 100);
+      }
+    };
+
+    // Set interval to reset typing animation
+    const interval = setInterval(() => {
+      resetTyping();
+    }, 8000); // Reset every 8 seconds
+
+    return () => clearInterval(interval);
   }, []);
 
   // Kiểm tra hash trong URL khi load trang
@@ -214,8 +240,26 @@ const Header: React.FC = () => {
                 href="#contact" 
                 className={`contact-link ${activeSection === 'contact' ? 'active-contact' : ''}`}
                 onClick={(e) => handleNavClick('contact', e)}
+                onMouseEnter={() => {
+                  if (typingRef.current) {
+                    typingRef.current.style.animation = 'none';
+                    setTimeout(() => {
+                      if (typingRef.current) {
+                        typingRef.current.style.animation = '';
+                      }
+                    }, 10);
+                  }
+                }}
               >
-                Contact
+                <span className="icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
+                </span>
+                <span className="text-container">
+                  <span className="text typing-animation" ref={typingRef}>Contact</span>
+                </span>
               </a>
             </li>
             
