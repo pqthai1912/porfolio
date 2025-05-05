@@ -1,55 +1,28 @@
 /**
- * Cải thiện trải nghiệm cuộn và touch trên thiết bị di động
+ * Cải thiện trải nghiệm trên thiết bị di động
  */
 
-/* Tối ưu hóa xử lý scroll-snap */
+/* Thiết lập đơn giản cho thiết bị di động */
 @media (max-width: 768px) {
-    body {
-        touch-action: pan-y;
-    }
 
+    /* Cho phép vuốt cơ bản */
     .scroll-container {
+        overflow-y: auto;
         height: 100vh;
-        overflow-y: scroll;
-        -webkit-overflow-scrolling: touch;
-        scroll-snap-type: y proximity;
-        scroll-behavior: smooth;
     }
 
+    /* Cho phép các phần tử có chiều cao tự động */
     .scroll-container>section {
-        scroll-snap-align: start;
         height: auto;
         min-height: 100vh;
-        overflow-y: visible;
     }
 
-    /* Vô hiệu hóa scroll-snap cho các phần tử cần cuộn nội bộ */
+    /* Tăng padding để nội dung dễ nhìn hơn */
     .education,
     .projects,
     .skills,
     .experience,
     .certifications {
-        overflow-y: visible;
-        scroll-snap-align: none;
-        padding-bottom: 50px;
-    }
-
-    /* Tối ưu hóa touch trên các vùng chứa có thể tương tác */
-    .form-group input,
-    .form-group textarea,
-    button,
-    a {
-        touch-action: manipulation;
-    }
-}
-
-/* Xử lý các vấn đề iOS cụ thể */
-@supports (-webkit-touch-callout: none) {
-    .scroll-container {
-        height: -webkit-fill-available;
-    }
-
-    .scroll-container>section {
-        min-height: -webkit-fill-available;
+        padding-bottom: 30px;
     }
 }

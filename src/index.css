@@ -7,12 +7,10 @@ body {
   /* IE and Edge */
   scrollbar-width: none;
   /* Firefox */
-  overscroll-behavior-y: contain;
-  /* Ngăn chặn hiệu ứng "bounce" trên Safari iOS */
-  touch-action: manipulation;
-  /* Cải thiện hiệu suất của các sự kiện chạm */
-  -webkit-tap-highlight-color: transparent;
-  /* Loại bỏ highlight khi chạm trên mobile */
+  /* Loại bỏ các thiết lập có thể gây ra lỗi */
+  /* overscroll-behavior-y: contain; */
+  /* touch-action: manipulation; */
+  /* -webkit-tap-highlight-color: transparent; */
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -45,8 +43,8 @@ body {
   position: fixed;
   /* Prevent body scrolling */
   width: 100%;
-  -webkit-overflow-scrolling: touch;
-  /* Cải thiện hiệu suất cuộn trên iOS */
+  /* Loại bỏ thiết lập có thể gây ra lỗi */
+  /* -webkit-overflow-scrolling: touch; */
 }
 
 * {

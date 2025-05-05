@@ -43,37 +43,14 @@ const App: React.FC = () => {
     }
   }, []);
 
-  // Cải thiện xử lý sự kiện touch cho thiết bị di động
+  // Đơn giản hóa xử lý sự kiện touch trên thiết bị di động
   useEffect(() => {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    // Bỏ việc xử lý sự kiện phức tạp để quay lại hoạt động cơ bản
+    const enableScrolling = () => {
+      document.body.style.overflow = 'auto';
+    };
     
-    if (isMobile && scrollContainerRef.current) {
-      const container = scrollContainerRef.current;
-      
-      // Xử lý touchmove để đảm bảo nội dung có thể cuộn
-      const handleTouchMove = (e: TouchEvent) => {
-        // Chỉ ngăn chặn sự kiện mặc định nếu cần thiết
-        if (container.scrollHeight <= container.clientHeight) {
-          e.preventDefault();
-        }
-      };
-      
-      // Xử lý wheel để ngăn chặn các hiệu ứng cuộn mặc định gây xung đột
-      const handleWheel = (e: WheelEvent) => {
-        // Tùy chỉnh hành vi cuộn nếu cần
-        if (Math.abs(e.deltaY) > 0) {
-          container.scrollTop += e.deltaY;
-        }
-      };
-      
-      container.addEventListener('touchmove', handleTouchMove, { passive: false });
-      container.addEventListener('wheel', handleWheel, { passive: false });
-      
-      return () => {
-        container.removeEventListener('touchmove', handleTouchMove);
-        container.removeEventListener('wheel', handleWheel);
-      };
-    }
+    enableScrolling();
   }, []);
 
   // Preload key images for smoother experience
