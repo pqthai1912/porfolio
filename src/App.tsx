@@ -10,13 +10,16 @@ import Certifications from "./components/Certifications";
 import Education from "./components/Education";
 // import Contact from "./components/Contact";
 import ContactMe from "./components/ContactMe";
+import EnglishAbility from "./components/EnglishAbility";
 // Footer now included in ContactMe
 import { env } from "./utils/env";
 import "./App.css";
+import { motion, AnimatePresence } from "framer-motion";
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [currentSection, setCurrentSection] = useState<string | null>(null);
 
   // Handle initial loading transition
   useEffect(() => {
@@ -32,6 +35,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const hash = window.location.hash.replace('#', '');
     if (hash) {
+      setCurrentSection(hash);
       // Slight delay to ensure components are mounted
       setTimeout(() => {
         const element = document.getElementById(hash);
@@ -42,6 +46,35 @@ const App: React.FC = () => {
       }, 500); // Longer delay to ensure proper rendering
     }
   }, []);
+
+  // Track visible sections during scroll
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.target.id) {
+            setCurrentSection(entry.target.id);
+            // Update URL hash without scrolling
+            const currentUrl = window.location.pathname + window.location.search;
+            window.history.replaceState(null, '', currentUrl + '#' + entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.3 } // Element must be 30% visible
+    );
+
+    // Observe all section elements
+    const sections = document.querySelectorAll('section[id]');
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+
+    return () => {
+      sections.forEach(section => {
+        observer.unobserve(section);
+      });
+    };
+  }, [isLoading]); // Run after initial loading
 
   // Đơn giản hóa xử lý sự kiện touch trên thiết bị di động
   useEffect(() => {
@@ -71,20 +104,43 @@ const App: React.FC = () => {
     preloadImages();
   }, []);
 
+  const pageTransition = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        duration: 0.5,
+        staggerChildren: 0.1,
+        when: "beforeChildren"
+      }
+    },
+    exit: { opacity: 0, transition: { duration: 0.3 } }
+  };
+
   return (
     <div className={`app ${isLoading ? 'loading' : 'loaded'}`}>
-      <Header />
-      <main className="scroll-container" ref={scrollContainerRef}>
-        <Hero />
-        <About />
-        <Projects />
-        <Skills />
-        <Experience />
-        <Certifications />
-        <Education />
-        {/* <Contact /> */}
-        <ContactMe />
-      </main>
+      <Header currentSection={currentSection} />
+      <AnimatePresence mode="wait">
+        <motion.main 
+          className="scroll-container" 
+          ref={scrollContainerRef}
+          variants={pageTransition}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+        >
+          <Hero />
+          <About />
+          <Projects />
+          <Skills />
+          <Experience />
+          <Certifications />
+          <EnglishAbility />
+          <Education />
+          {/* <Contact /> */}
+          <ContactMe />
+        </motion.main>
+      </AnimatePresence>
     </div>
   );
 };

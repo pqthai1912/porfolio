@@ -1,10 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Header.css';
 
-const Header: React.FC = () => {
+// Add the currentSection prop to the component props
+interface HeaderProps {
+  currentSection?: string | null;
+}
+
+const Header: React.FC<HeaderProps> = ({ currentSection }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  // Add a state to track if activeSection is from click
+  const [isActivatedByClick, setIsActivatedByClick] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const typingRef = useRef<HTMLDivElement>(null);
@@ -76,6 +83,14 @@ const Header: React.FC = () => {
     }
   }, []); // Run once when component mounts
 
+  // Use currentSection to update activeSection if provided
+  useEffect(() => {
+    if (currentSection) {
+      setActiveSection(currentSection);
+      setIsActivatedByClick(true); // Assume currentSection is from a click
+    }
+  }, [currentSection]);
+
   // Improved scroll handler with better section detection
   useEffect(() => {
     const handleScroll = () => {
@@ -88,9 +103,15 @@ const Header: React.FC = () => {
       // Don't update active section during transitions or programmatic scrolls
       if (isTransitioning || isScrollingProgrammatically.current) return;
       
+      // CHANGE: Set isActivatedByClick to false during scroll
+      // This ensures active state is removed during scrolling
+      if (isActivatedByClick) {
+        setIsActivatedByClick(false);
+      }
+      
       const sections = [
         'home', 'about', 'projects', 'skills', 
-        'experience', 'education', 'certifications', 'contact'
+        'experience', 'education', 'certifications', 'english-ability', 'contact'
       ];
       
       // Find which section is most visible in viewport
@@ -122,14 +143,10 @@ const Header: React.FC = () => {
         }
       }
       
-      if (maxVisibleSection.id !== activeSection) {
-        setActiveSection(maxVisibleSection.id);
-        
-        // Update URL hash when section changes
-        if (maxVisibleSection.id !== lastUpdatedHash.current) {
-          lastUpdatedHash.current = maxVisibleSection.id;
-          window.history.replaceState(null, '', `#${maxVisibleSection.id}`);
-        }
+      // CHANGE: Only update URL hash, but don't set active section during scroll
+      if (maxVisibleSection.id !== lastUpdatedHash.current) {
+        lastUpdatedHash.current = maxVisibleSection.id;
+        window.history.replaceState(null, '', `#${maxVisibleSection.id}`);
       }
     };
 
@@ -147,7 +164,7 @@ const Header: React.FC = () => {
 
     window.addEventListener('scroll', scrollListener);
     return () => window.removeEventListener('scroll', scrollListener);
-  }, [activeSection, isTransitioning]);
+  }, [activeSection, isTransitioning, isActivatedByClick]);
 
   // Listen for hash changes
   useEffect(() => {
@@ -178,6 +195,8 @@ const Header: React.FC = () => {
     
     // Set active section immediately for better UX
     setActiveSection(sectionId);
+    // CHANGE: Mark this as activated by click
+    setIsActivatedByClick(true);
     lastUpdatedHash.current = sectionId;
     
     // Close mobile menu if open
@@ -231,7 +250,7 @@ const Header: React.FC = () => {
             <li>
               <a 
                 href="#home" 
-                className={activeSection === 'home' ? 'active' : ''}
+                className={activeSection === 'home' && isActivatedByClick ? 'active' : ''}
                 onClick={(e) => handleNavClick('home', e)}
               >
                 Home
@@ -240,16 +259,16 @@ const Header: React.FC = () => {
             <li>
               <a 
                 href="#about" 
-                className={activeSection === 'about' ? 'active' : ''}
+                className={activeSection === 'about' && isActivatedByClick ? 'active' : ''}
                 onClick={(e) => handleNavClick('about', e)}
               >
-                About
+                About Me
               </a>
             </li>
             <li>
               <a 
                 href="#projects" 
-                className={activeSection === 'projects' ? 'active' : ''}
+                className={activeSection === 'projects' && isActivatedByClick ? 'active' : ''}
                 onClick={(e) => handleNavClick('projects', e)}
               >
                 Projects
@@ -258,7 +277,7 @@ const Header: React.FC = () => {
             <li>
               <a 
                 href="#skills" 
-                className={activeSection === 'skills' ? 'active' : ''}
+                className={activeSection === 'skills' && isActivatedByClick ? 'active' : ''}
                 onClick={(e) => handleNavClick('skills', e)}
               >
                 Skills
@@ -267,16 +286,16 @@ const Header: React.FC = () => {
             <li>
               <a 
                 href="#experience" 
-                className={activeSection === 'experience' ? 'active' : ''}
+                className={activeSection === 'experience' && isActivatedByClick ? 'active' : ''}
                 onClick={(e) => handleNavClick('experience', e)}
               >
                 Experience
               </a>
             </li>
-            <li className="mobile-hide">
+            <li>
               <a 
                 href="#certifications" 
-                className={activeSection === 'certifications' ? 'active' : ''}
+                className={activeSection === 'certifications' && isActivatedByClick ? 'active' : ''}
                 onClick={(e) => handleNavClick('certifications', e)}
               >
                 Certifications
@@ -284,17 +303,26 @@ const Header: React.FC = () => {
             </li>
             <li className="mobile-hide">
               <a 
+                href="#english-ability" 
+                className={activeSection === 'english-ability' && isActivatedByClick ? 'active' : ''}
+                onClick={(e) => handleNavClick('english-ability', e)}
+              >
+                English Ability
+              </a>
+            </li>
+            <li className="mobile-hide">
+              <a 
                 href="#education" 
-                className={activeSection === 'education' ? 'active' : ''}
+                className={activeSection === 'education' && isActivatedByClick ? 'active' : ''}
                 onClick={(e) => handleNavClick('education', e)}
-                >
+              >
                 Education
               </a>
             </li>
             <li>
               <a 
                 href="#contact" 
-                className={`contact-link ${activeSection === 'contact' ? 'active-contact' : ''}`}
+                className={`contact-link ${activeSection === 'contact' && isActivatedByClick ? 'active-contact' : ''}`}
                 onClick={(e) => handleNavClick('contact', e)}
                 onMouseEnter={() => {
                   if (typingRef.current) {

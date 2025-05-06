@@ -1,11 +1,12 @@
 import React, { ReactNode, useEffect } from "react";
-import { motion, useAnimation } from "framer-motion";
+import { motion, useAnimation, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
 interface AnimatedSectionProps {
   children: ReactNode;
   className?: string;
   style?: React.CSSProperties;
+  id?: string;
 }
 
 /**
@@ -21,11 +22,13 @@ interface AnimatedSectionProps {
  * @param children - The children of the component.
  * @param className - The class name of the component.
  * @param style - The style of the component.
+ * @param id - The ID of the component for navigation.
  */
 const AnimatedSection: React.FC<AnimatedSectionProps> = ({
   children,
   className,
   style,
+  id,
 }) => {
   const controls = useAnimation();
   const [ref, inView] = useInView({
@@ -66,20 +69,29 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({
     /**
      * The animation for when the element is visible.
      */
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+
+    /**
+     * The animation for when the element is exiting.
+     */
+    exit: { opacity: 0, y: -20, transition: { duration: 0.4, ease: "easeIn" } }
   };
 
   return (
-    <motion.div
-      ref={ref}
-      animate={controls}
-      initial="hidden"
-      variants={variants}
-      className={className}
-      style={style}
-    >
-      {children}
-    </motion.div>
+    <AnimatePresence mode="wait">
+      <motion.div
+        ref={ref}
+        animate={controls}
+        initial="hidden"
+        exit="exit"
+        variants={variants}
+        className={className}
+        style={style}
+        id={id}
+      >
+        {children}
+      </motion.div>
+    </AnimatePresence>
   );
 };
 

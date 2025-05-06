@@ -26,6 +26,7 @@
   overflow-x: hidden;
   -ms-overflow-style: none;
   /* IE and Edge */
+  position: relative;
 }
 
 /* Thêm CSS cụ thể cho Footer trong scroll-container */
@@ -80,6 +81,10 @@
 section {
   scroll-margin-top: 52px;
   /* Add scroll margin to account for fixed header */
+  position: relative;
+  z-index: 1;
+  transition: opacity 0.3s ease, transform 0.5s ease;
+  will-change: opacity, transform;
 }
 
 /* Fade in animation for sections as they come into view */
@@ -114,6 +119,52 @@ section {
     scroll-snap-align: start;
     padding-bottom: 40px;
     overflow-y: visible;
+  }
+
+  form input,
+  form textarea {
+    font-size: 16px;
+    /* Prevent zoom on iOS */
+  }
+
+  .app {
+    min-height: -webkit-fill-available;
+    min-height: 100vh;
+  }
+
+  .scroll-container>section:last-child {
+    /* Extra padding for the last section to prevent content from being hidden */
+    padding-bottom: env(safe-area-inset-bottom, 80px);
+    margin-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* Apply safe area insets for iOS devices */
+  @supports (-webkit-touch-callout: none) {
+    body {
+      /* Prevent elastic scrolling in iOS */
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      overscroll-behavior-y: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .app {
+      /* iOS needs this to work with dynamic height */
+      height: -webkit-fill-available;
+    }
+
+    .scroll-container {
+      /* Ensure content is scrollable but not stretchy */
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow-y: auto;
+      height: auto;
+    }
   }
 }
 
@@ -184,4 +235,61 @@ section {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* Smooth transitions between sections */
+.scroll-container {
+  position: relative;
+  overflow-x: hidden;
+  /* Prevent horizontal overflow during animations */
+}
+
+/* Improve form interaction */
+form {
+  isolation: isolate;
+  /* Create a stacking context */
+  position: relative;
+  z-index: 5;
+  /* Ensure form is above other elements */
+}
+
+form input,
+form textarea,
+form button {
+  will-change: transform;
+  /* Optimize performance */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+form input:focus,
+form textarea:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure animations don't interfere with scrolling */
+.contact-form {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Prevent iOS body scrolling when interacting with the form */
+body.form-active {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+/* Transition timing functions */
+.app .loaded {
+  transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1.000);
+}
+
+/* Ensure smoother animations on all devices */
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-container {
+    scroll-behavior: smooth;
+  }
 }

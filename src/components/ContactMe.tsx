@@ -3,6 +3,7 @@ import "./ContactMe.css";
 import emailjs from '@emailjs/browser';
 import { env } from "../utils/env";
 import Footer from "./Footer";
+import { motion } from "framer-motion";
 
 const ContactMe: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ const ContactMe: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{success?: boolean; message: string} | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
+  const contactSectionRef = useRef<HTMLElement>(null);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -26,6 +28,7 @@ const ContactMe: React.FC = () => {
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    e.stopPropagation(); // Prevent event bubbling
     setIsSubmitting(true);
     setSubmitStatus(null);
     
@@ -76,8 +79,81 @@ const ContactMe: React.FC = () => {
     };
   }, [submitStatus]);
 
+  // Add event capture for scroll events to prevent propagation
+  useEffect(() => {
+    const formElement = formRef.current;
+    
+    const handleScroll = (e: Event) => {
+      // Only prevent default if we're interacting with the form
+      if (document.activeElement && formElement?.contains(document.activeElement)) {
+        e.stopPropagation();
+      }
+    };
+    
+    if (formElement) {
+      formElement.addEventListener('wheel', handleScroll, { passive: false });
+      formElement.addEventListener('touchmove', handleScroll, { passive: false });
+    }
+    
+    return () => {
+      if (formElement) {
+        formElement.removeEventListener('wheel', handleScroll);
+        formElement.removeEventListener('touchmove', handleScroll);
+      }
+    };
+  }, []);
+
+  // Adjust for mobile browsers with bottom URL bars
+  useEffect(() => {
+    const adjustContactSection = () => {
+      if (contactSectionRef.current) {
+        const isMobile = window.innerWidth <= 768;
+        
+        if (isMobile) {
+          // Detect if browser likely has bottom URL bar
+          const windowHeight = window.innerHeight;
+          const documentHeight = document.documentElement.clientHeight;
+          const hasBottomBar = windowHeight < documentHeight;
+          
+          if (hasBottomBar) {
+            // Add extra padding at the bottom to ensure content is visible
+            contactSectionRef.current.style.paddingBottom = '100px';
+            
+            // Also ensure the footer wrapper has enough space
+            const footerWrapper = contactSectionRef.current.querySelector('.footer-wrapper');
+            if (footerWrapper instanceof HTMLElement) {
+              footerWrapper.style.marginBottom = '80px';
+            }
+          }
+        }
+      }
+    };
+    
+    // Run on mount and window resize
+    adjustContactSection();
+    window.addEventListener('resize', adjustContactSection);
+    window.addEventListener('orientationchange', adjustContactSection);
+    
+    return () => {
+      window.removeEventListener('resize', adjustContactSection);
+      window.removeEventListener('orientationchange', adjustContactSection);
+    };
+  }, []);
+
+  const formVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
   return (
-    <section id="contact" className="contact-section">
+    <section id="contact" className="contact-section" ref={contactSectionRef}>
       <div className="container">
         <div className="contact-headline">
           <h6>Get in Touch</h6>
@@ -129,84 +205,95 @@ const ContactMe: React.FC = () => {
             </div>
           </div>
           
-          <form className="contact-form" ref={formRef} onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="name">Name</label>
-              <input 
-                type="text" 
-                id="name" 
-                name="name" 
-                value={formData.name}
-                onChange={handleChange}
-                required 
-              />
-            </div>
-            
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input 
-                type="email" 
-                id="email" 
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required 
-              />
-            </div>
-            
-            <div className="form-group">
-              <label htmlFor="subject">Subject</label>
-              <input 
-                type="text" 
-                id="subject" 
-                name="subject"
-                value={formData.subject}
-                onChange={handleChange}
-                required 
-              />
-            </div>
-            
-            <div className="form-group">
-              <label htmlFor="message">Message</label>
-              <textarea 
-                id="message" 
-                name="message" 
-                rows={5}
-                value={formData.message}
-                onChange={handleChange}
-                required
-              ></textarea>
-            </div>
-            
-            {submitStatus && (
-              <div className={`submit-status ${submitStatus.success ? 'success' : 'error'}`}>
-                {submitStatus.success ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'inline-block', marginRight: '8px', verticalAlign: 'middle' }}>
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                  </svg>
-                ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'inline-block', marginRight: '8px', verticalAlign: 'middle' }}>
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" y1="8" x2="12" y2="12"></line>
-                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                  </svg>
-                )}
-                {submitStatus.message}
-              </div>
-            )}
-            
-            <button 
-              type="submit" 
-              className="btn btn-primary"
-              disabled={isSubmitting}
+          <motion.div
+            variants={formVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.1 }}
+          >
+            <form 
+              className="contact-form" 
+              ref={formRef} 
+              onSubmit={handleSubmit}
             >
-              {isSubmitting ? 'Sending...' : 'Send Message'}
-            </button>
-          </form>
+              <div className="form-group">
+                <label htmlFor="name">Name</label>
+                <input 
+                  type="text" 
+                  id="name" 
+                  name="name" 
+                  value={formData.name}
+                  onChange={handleChange}
+                  required 
+                />
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="email">Email</label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required 
+                />
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="subject">Subject</label>
+                <input 
+                  type="text" 
+                  id="subject" 
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  required 
+                />
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="message">Message</label>
+                <textarea 
+                  id="message" 
+                  name="message" 
+                  rows={5}
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                ></textarea>
+              </div>
+              
+              {submitStatus && (
+                <div className={`submit-status ${submitStatus.success ? 'success' : 'error'}`}>
+                  {submitStatus.success ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'inline-block', marginRight: '8px', verticalAlign: 'middle' }}>
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'inline-block', marginRight: '8px', verticalAlign: 'middle' }}>
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="8" x2="12" y2="12"></line>
+                      <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                  )}
+                  {submitStatus.message}
+                </div>
+              )}
+              
+              <button 
+                type="submit" 
+                className="btn btn-primary submit-button"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Sending...' : 'Send Message'}
+              </button>
+            </form>
+          </motion.div>
         </div>
       </div>
-      <div className="footer-wrapper">
+      <div className="footer-wrapper safe-area-bottom">
         <Footer />
       </div>
     </section>
