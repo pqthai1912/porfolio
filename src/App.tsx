@@ -104,6 +104,14 @@ const App: React.FC = () => {
     preloadImages();
   }, []);
 
+  useEffect(() => {
+    const setVh = () => {
+      document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+    };
+    window.addEventListener('resize', setVh);
+    setVh();
+  }, []);
+
   const pageTransition = {
     hidden: { opacity: 0 },
     visible: { 
