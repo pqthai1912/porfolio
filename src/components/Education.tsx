@@ -23,13 +23,16 @@ const Education: React.FC = () => {
   // Lock scrolling when modal is open
   useEffect(() => {
     if (isImageExpanded) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.setProperty('overflow', 'hidden', 'important');
+      document.body.style.setProperty('position', 'fixed', 'important');
     } else {
       document.body.style.overflow = '';
+      document.body.style.position = '';
     }
     
     return () => {
       document.body.style.overflow = '';
+      document.body.style.position = '';
     };
   }, [isImageExpanded]);
 
