@@ -18,6 +18,7 @@
 .scroll-container {
   overflow-y: auto;
   scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
   /* Firefox */
   height: 100vh;
   scroll-behavior: smooth;
