@@ -1,7 +1,7 @@
 .app {
-  position: relative;
+  position: hidden;
   overflow: visible;
-  min-height: 100vh;
+  height: 100vh;
   width: 100vw;
   transition: opacity 0.5s ease;
 }
@@ -106,7 +106,7 @@ section {
 }
 
 /* Responsive adjustments for mobile */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .scroll-container {
     scroll-snap-type: y proximity;
     position: relative;
@@ -127,6 +127,8 @@ section {
   }
 
   .app {
+    /* Prevent elastic scrolling in iOS */
+    overflow: visible;
     min-height: -webkit-fill-available;
     min-height: 100vh;
   }

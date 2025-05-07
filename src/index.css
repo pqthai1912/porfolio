@@ -38,8 +38,10 @@ body {
   color: #1d1d1f;
   background-color: #fff;
   line-height: 1.5;
-  overflow: auto;
-  position: static;
+  overflow: hidden;
+  /* Prevent double scrolling */
+  position: fixed;
+  /* Prevent body scrolling */
   width: 100%;
   /* Loại bỏ thiết lập có thể gây ra lỗi */
   /* -webkit-overflow-scrolling: touch; */
@@ -117,7 +119,7 @@ ol {
 }
 
 /* Optimizations for mobile */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
 
   body,
   html {
