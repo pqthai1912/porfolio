@@ -1,7 +1,7 @@
 html,
 body {
   scroll-behavior: smooth;
-  overflow: auto;
+  overflow-x: hidden;
   height: 100%;
   -ms-overflow-style: none;
   /* IE and Edge */
@@ -124,7 +124,8 @@ ol {
   body,
   html {
     height: 100%;
-    overflow: hidden;
+    overflow: auto;
+    position: static;
   }
 
   section {
