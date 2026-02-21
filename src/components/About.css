@@ -74,6 +74,23 @@
   z-index: 1;
 }
 
+.about-carousel {
+  display: grid;
+  width: 100%;
+}
+
+.about-carousel-slide {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transition: opacity 0.65s ease;
+  pointer-events: none;
+}
+
+.about-carousel-slide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .about-image::before {
   content: "";
   position: absolute;
@@ -114,6 +131,10 @@
 .about-image:hover img {
   transform: scale(1.03);
   filter: brightness(1.04);
+}
+
+.about-image:hover .about-carousel-slide:not(.active) img {
+  transform: scale(1);
 }
 
 .about-text {

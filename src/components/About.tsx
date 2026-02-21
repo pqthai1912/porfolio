@@ -7,6 +7,10 @@ const About: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const statsRef = useRef<HTMLDivElement>(null);
   const [statsRotating, setStatsRotating] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isCarouselPaused, setIsCarouselPaused] = useState(false);
+
+  const carouselImages = ["/carousel_1.JPEG", "/carousel_2.JPEG", "/carousel_3.JPEG"];
 
   // Handle navigation click
   const handleNavClick = (sectionId: string, event: React.MouseEvent) => {
@@ -58,6 +62,17 @@ const About: React.FC = () => {
     return () => clearTimeout(statsTimer);
   }, [isVisible]);
 
+  // Auto-play infinite carousel for About image gallery.
+  useEffect(() => {
+    if (isCarouselPaused) return;
+
+    const timer = window.setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
+    }, 3200);
+
+    return () => window.clearInterval(timer);
+  }, [isCarouselPaused, carouselImages.length]);
+
   // Function to add animated stats classes based on visibility
   const getStatClass = (index: number) => {
     if (!isVisible) return '';
@@ -79,8 +94,26 @@ const About: React.FC = () => {
         </div>
         
         <div className="about-content">
-          <div className="about-image">
-            <img src={getPublicImageUrl('/sunset.jpg')} alt="Phan Quang Thai" />
+          <div
+            className="about-image"
+            onMouseEnter={() => setIsCarouselPaused(true)}
+            onMouseLeave={() => setIsCarouselPaused(false)}
+          >
+            <div className="about-carousel">
+              {carouselImages.map((imagePath, index) => (
+                <div
+                  key={imagePath}
+                  className={`about-carousel-slide ${index === currentSlide ? "active" : ""}`}
+                  aria-hidden={index !== currentSlide}
+                >
+                  <img
+                    src={getPublicImageUrl(imagePath)}
+                    alt={`Portfolio carousel ${index + 1}`}
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
           
           <div className="about-text">
