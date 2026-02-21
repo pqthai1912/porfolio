@@ -76,6 +76,15 @@
   padding-top: 10px;
 }
 
+.footer-bottom p {
+  margin: 0;
+}
+
+.footer-signature {
+  font-family: var(--name-font);
+  font-weight: 400;
+}
+
 @media (max-width: 992px) {
   .footer-content {
     grid-template-columns: 1fr 1fr;

@@ -46,7 +46,9 @@ const Footer: React.FC = () => {
         </div>
         
         <div className="footer-bottom">
-          <p>© {new Date().getFullYear()} Phan Quang Thai. All rights reserved.</p>
+          <p>
+            © {new Date().getFullYear()} <span className="footer-signature">Phan Quang Thai</span>. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
