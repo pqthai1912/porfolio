@@ -47,6 +47,20 @@
   scroll-margin-top: calc(var(--header-height) + 12px);
 }
 
+.scroll-container section h1,
+.scroll-container section h2,
+.scroll-container section h3,
+.scroll-container section h4,
+.scroll-container section h5,
+.scroll-container section h6,
+.scroll-container section strong,
+.scroll-container section b,
+.scroll-container section label,
+.scroll-container section .detail-label {
+  color: var(--apple-blue);
+  letter-spacing: 0.01em;
+}
+
 .container {
   width: min(100%, var(--container-width));
   margin: 0 auto;

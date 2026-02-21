@@ -9,6 +9,7 @@ type Project = {
   period: string;
   description: string;
   technologies: string;
+  highlights: string[];
   link?: string;
 };
 
@@ -17,29 +18,56 @@ const projects: Project[] = [
     title: "Corporate Food Ordering System",
     period: "Sep 2023 - Jan 2024",
     description:
-      "Developed a food ordering system for corporate clients using PHP (Laravel), JQuery, MySQL, and Amazon S3.",
+      "Engineered a food ordering system for corporate clients using PHP (Laravel), jQuery, MySQL, and Amazon S3.",
     technologies: "PHP, Laravel, JQuery, MySQL, Amazon S3",
+    highlights: [
+      "Implemented features for delivery operations and invoicing.",
+      "Ensured system stability and performance through regular monitoring.",
+    ],
   },
   {
     title: "Real Estate Management Platform",
-    period: "April 2023 - Present",
+    period: "Apr 2023 - Dec 2025",
     description:
-      "Managed real estate properties using PHP (CakePHP) and improved system reliability by resolving S3 retrieval errors.",
+      "Managed real estate properties and services using PHP (CakePHP), jQuery, MySQL, Amazon S3, and Docker.",
     technologies: "PHP, CakePHP, JQuery, MySQL, Docker, Amazon S3",
+    highlights: [
+      "Resolved Amazon S3 retrieval errors for over 1,000 objects, improving system reliability.",
+      "Oversaw system maintenance, feature development, version upgrades, and customer support.",
+    ],
   },
   {
     title: "Restaurant Management System",
-    period: "April 2024 - Aug 2024",
+    period: "Apr 2024 - Aug 2024",
     description:
-      "Built a reservation and pre-order system using PHP (CakePHP) and introduced a queue management feature.",
+      "Built a reservation and pre-order system using PHP (CakePHP), jQuery, Vue, PostgreSQL, and Amazon S3.",
     technologies: "PHP, CakePHP, JQuery, Vue, PostgreSQL, Amazon S3",
+    highlights: [
+      "Introduced a queue management feature to assign and display ticket numbers.",
+      "Sustained and added new features to improve user experience.",
+    ],
   },
   {
     title: "Electric Charger Management System",
-    period: "Sep 2024 - Present",
+    period: "Sep 2024 - Dec 2025",
     description:
-      "Created a sub-module for managing electric chargers, applying locking techniques to prevent concurrent updates.",
+      "Created a sub-module for managing electric chargers using PHP (Laravel), jQuery, MySQL, and Amazon S3.",
     technologies: "PHP, Laravel, JQuery, MySQL, Amazon S3",
+    highlights: [
+      "Evaluated and applied pessimistic and optimistic locking to prevent concurrent updates.",
+      "Crafted intuitive UI that maintained data integrity during stock operations.",
+    ],
+  },
+  {
+    title: "Employee Evaluation System",
+    period: "Jan 2026 - Present",
+    description:
+      "Delivered end-to-end implementation with Inertia.js and Vue.js in an AI-assisted workflow.",
+    technologies: "PHP, Laravel, Inertia.js, Vue.js, MySQL",
+    highlights: [
+      "Handled migrations, coding, test cases, and testing from start to release.",
+      "Improved delivery efficiency by managing multiple tasks concurrently.",
+    ],
   },
 ];
 
@@ -103,6 +131,11 @@ const Projects: React.FC = () => {
             <p>
               <strong>Technologies:</strong> {proj.technologies}
             </p>
+            <ul className="project-highlights">
+              {proj.highlights.map((highlight) => (
+                <li key={highlight}>{highlight}</li>
+              ))}
+            </ul>
             {proj.link && (
               <a href={proj.link} target="_blank" rel="noopener noreferrer">
                 View Project

@@ -14,30 +14,57 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.skills-groups {
+  width: min(100%, 1000px);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.skill-group {
+  background: #ffffff;
+  border: 1px solid #e4e4e8;
+  border-radius: 12px;
+  padding: 14px;
+  text-align: left;
+}
+
+.skill-group h3 {
+  font-size: 0.95rem;
+  color: #2f2f34;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
 .skills-list {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: clamp(8px, 1.8vw, 14px);
   padding: 0;
-  max-width: 900px;
 }
 
 .skill-item {
-  background: #1a1a1a;
+  background: var(--button-bg);
   color: #fff;
   padding: 0.6rem 1rem;
   border-radius: 999px;
   font-size: clamp(0.9rem, 1.8vw, 1.05rem);
   font-weight: 500;
   line-height: 1.2;
+  box-shadow: 0 3px 10px rgba(93, 59, 36, 0.2);
 }
 
 @media (max-width: 768px) {
   .skills {
     padding: 64px 16px;
+  }
+
+  .skills-groups {
+    grid-template-columns: 1fr;
   }
 
   .skills-list {

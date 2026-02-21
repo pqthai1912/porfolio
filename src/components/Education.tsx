@@ -107,11 +107,18 @@ const Education: React.FC = () => {
             <div className="education-content">
               <h3>Bachelor of Software Engineering</h3>
               <span className="period">Sep 2019 - Sep 2023</span>
-              <p className="institution">Ton Duc Thang University</p>
+              <p className="institution">
+                <a
+                  href="https://admission.tdtu.edu.vn/en"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Ton Duc Thang University
+                </a>
+              </p>
               <p className="description">
-                Graduated with honors, specializing in software development 
-                and system architecture. Completed coursework in algorithms, 
-                data structures, web development, and database systems.
+                Completed the Bachelor of Software Engineering program with a
+                focus on software development and system architecture.
               </p>
               <div className="education-details">
                 <div className="detail-item">
@@ -119,12 +126,10 @@ const Education: React.FC = () => {
                   <span className="detail-value">Software Engineering</span>
                 </div>
                 <div className="detail-item">
-                  <span className="detail-label">GPA:</span>
-                  <span className="detail-value">3.8/4.0</span>
-                </div>
-                <div className="detail-item">
-                  <span className="detail-label">Key Courses:</span>
-                  <span className="detail-value">Object-Oriented Programming, Algorithms, Database Systems, Web Development</span>
+                  <span className="detail-label">Awards:</span>
+                  <span className="detail-value">
+                    University Scholarship (2020-2021, 2021-2022, 2022-2023)
+                  </span>
                 </div>
               </div>
             </div>

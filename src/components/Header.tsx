@@ -325,7 +325,7 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
                 className={activeSection === 'english-ability' && isActivatedByClick ? 'active' : ''}
                 onClick={(e) => handleNavClick('english-ability', e)}
               >
-                English Ability
+                Languages
               </a>
             </li>
             <li className="mobile-hide">

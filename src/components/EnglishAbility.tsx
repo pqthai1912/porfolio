@@ -40,8 +40,19 @@ const EnglishAbility: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          My English Proficiency
+          Languages
         </motion.h2>
+
+        <div className="language-summary">
+          <div className="language-card">
+            <h3>English</h3>
+            <p>PET B1 Certificate (Cambridge Assessment English)</p>
+          </div>
+          <div className="language-card">
+            <h3>Japanese</h3>
+            <p>Currently learning (N5)</p>
+          </div>
+        </div>
         
         <div className="certificate-container">
           <motion.div 
@@ -65,7 +76,7 @@ const EnglishAbility: React.FC = () => {
           
           <div className="certificate-details">
             <div className="cefr-column">
-              <h3>  Level</h3>
+              <h3>Level</h3>
               <motion.div 
                 className="level-box b2"
                 initial={{ opacity: 0, x: -20 }}

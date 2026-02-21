@@ -63,7 +63,7 @@
 }
 
 .hero-title {
-  color: #1d1d1f;
+  color: var(--apple-blue);
   margin-bottom: 6px;
 }
 

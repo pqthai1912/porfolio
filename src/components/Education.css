@@ -81,6 +81,10 @@
   font-size: 1.04rem;
 }
 
+.education-item .institution a {
+  color: inherit;
+}
+
 .education-item .description {
   color: #555;
   line-height: 1.65;

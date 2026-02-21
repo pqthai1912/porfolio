@@ -5,6 +5,15 @@ import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { FaExpand } from "react-icons/fa";
 
+type Certification = {
+  id: number;
+  title: string;
+  organization: string;
+  bgColor: string;
+  pdfPath?: string;
+  externalUrl?: string;
+};
+
 const Certifications: React.FC = () => {
   const controls = useAnimation();
   const [ref, inView] = useInView({
@@ -15,7 +24,7 @@ const Certifications: React.FC = () => {
   const [currentPdf, setCurrentPdf] = useState("");
   const [isMobile, setIsMobile] = useState(false);
 
-  const certifications = [
+  const certifications: Certification[] = [
     {
       id: 1,
       title: "Web Applications for Everybody Specialization",
@@ -29,6 +38,13 @@ const Certifications: React.FC = () => {
       organization: "Johns Hopkins University",
       pdfPath: "/porfolio/Certificate_2.pdf",
       bgColor: "#8f5b2c"
+    },
+    {
+      id: 3,
+      title: "PET B1 Certificate",
+      organization: "Cambridge Assessment English",
+      externalUrl: "https://www.cambridgeenglish.org/exams-and-tests/preliminary/",
+      bgColor: "#a87433"
     }
   ];
 
@@ -84,12 +100,18 @@ const Certifications: React.FC = () => {
     })
   };
 
-  const openModal = (pdfPath: string) => {
+  const openCertificate = (cert: Certification) => {
+    if (cert.externalUrl) {
+      window.open(cert.externalUrl, "_blank", "noopener,noreferrer");
+      return;
+    }
+
+    if (!cert.pdfPath) return;
+
     if (isMobile) {
-      // On mobile, open PDF in a new tab instead of modal
-      window.open(pdfPath, '_blank');
+      window.open(cert.pdfPath, "_blank");
     } else {
-      setCurrentPdf(pdfPath);
+      setCurrentPdf(cert.pdfPath);
       setIsModalOpen(true);
     }
   };
@@ -120,7 +142,7 @@ const Certifications: React.FC = () => {
               initial="hidden"
               animate={controls}
               variants={cardVariants}
-              onClick={() => openModal(cert.pdfPath)}
+              onClick={() => openCertificate(cert)}
             >
               <div 
                 className="cert-preview" 
@@ -137,7 +159,13 @@ const Certifications: React.FC = () => {
                 </div>
                 <div className="cert-overlay">
                   <FaExpand className="expand-icon" />
-                  <span className="view-text">{isMobile ? 'Open PDF' : 'View Certificate'}</span>
+                  <span className="view-text">
+                    {cert.externalUrl
+                      ? "Open Link"
+                      : isMobile
+                        ? "Open PDF"
+                        : "View Certificate"}
+                  </span>
                 </div>
               </div>
               <div className="cert-details">

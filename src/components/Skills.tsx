@@ -4,16 +4,45 @@ import "./Skills.css";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
-const skills: string[] = [
-  "PHP",
-  "JavaScript",
-  "Laravel",
-  "CakePHP",
-  "JQuery",
-  "MySQL",
-  "Git",
-  "Docker",
-  "Amazon S3",
+type SkillGroup = {
+  title: string;
+  items: string[];
+};
+
+const skillGroups: SkillGroup[] = [
+  {
+    title: "Programming Languages",
+    items: ["PHP", "JavaScript"],
+  },
+  {
+    title: "Backend Frameworks",
+    items: ["Laravel", "CakePHP"],
+  },
+  {
+    title: "Frontend",
+    items: ["HTML", "CSS", "jQuery", "Vue.js", "Inertia.js"],
+  },
+  {
+    title: "Databases",
+    items: ["MySQL", "PostgreSQL"],
+  },
+  {
+    title: "Tools",
+    items: ["Git", "Docker"],
+  },
+  {
+    title: "Cloud (AWS)",
+    items: ["S3", "Lambda", "Secrets Manager", "IAM roles"],
+  },
+  {
+    title: "Soft Skills",
+    items: [
+      "Problem-solving",
+      "Collaboration",
+      "Customer support",
+      "Business logic communication",
+    ],
+  },
 ];
 
 const Skills: React.FC = () => {
@@ -61,20 +90,27 @@ const Skills: React.FC = () => {
         >
           Skills
         </motion.h2>
-        <ul className="skills-list">
-          {skills.map((skill, index) => (
-            <motion.li 
-              key={index} 
-              className="skill-item"
-              custom={index}
+        <div className="skills-groups">
+          {skillGroups.map((group, groupIndex) => (
+            <motion.article
+              key={group.title}
+              className="skill-group"
+              custom={groupIndex}
               initial="hidden"
               animate={controls}
               variants={itemVariants}
             >
-              {skill}
-            </motion.li>
+              <h3>{group.title}</h3>
+              <ul className="skills-list">
+                {group.items.map((item) => (
+                  <li key={item} className="skill-item">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </motion.article>
           ))}
-        </ul>
+        </div>
       </AnimatedSection>
     </section>
   );

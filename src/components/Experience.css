@@ -41,11 +41,30 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.experience-item p {
+.experience-points {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.experience-points li {
   color: #333;
   font-size: 1rem;
   line-height: 1.65;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.experience-points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--apple-blue);
+  transform: translateY(-50%);
 }
 
 @media (max-width: 768px) {

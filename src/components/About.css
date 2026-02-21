@@ -26,11 +26,11 @@
 
 .about-headline h6 {
   color: var(--apple-blue);
-  font-size: 0.875rem;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+  text-transform: none;
+  letter-spacing: 0.02em;
   margin-bottom: 14px;
-  font-weight: 600;
+  font-weight: 400;
   opacity: 0;
   animation: fadeInUp 0.8s ease-out 0.2s forwards;
 }

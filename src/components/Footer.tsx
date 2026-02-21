@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
           <div className="footer-column">
             <h3 className="footer-title">Phan Quang Thai</h3>
             <p className="footer-description">
-              PHP Developer specializing in Laravel & CakePHP. Creating exceptional web experiences.
+              PHP Developer with 3 years of full-stack experience in Laravel and CakePHP, focused on clean code and reliable delivery.
             </p>
           </div>
           
@@ -28,17 +28,19 @@ const Footer: React.FC = () => {
             <ul className="footer-links">
               <li><a href="#experience">Experience</a></li>
               <li><a href="#certifications">Certifications</a></li>
+              <li><a href="#english-ability">Languages</a></li>
               <li><a href="#education">Education</a></li>
               <li><a href="#contact">Contact</a></li>
             </ul>
           </div>
           
           <div className="footer-column">
-            <h4 className="footer-heading">Social</h4>
+            <h4 className="footer-heading">Contact</h4>
             <div className="social-links">
+              <a href="mailto:thaiphan1912@gmail.com">thaiphan1912@gmail.com</a>
+              <a href="tel:0763666147">0763 666 147</a>
               <a href="https://github.com/pqthai1912" target="_blank" rel="noopener noreferrer">GitHub</a>
               <a href="https://linkedin.com/in/pqthai1912" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">Twitter</a>
             </div>
           </div>
         </div>

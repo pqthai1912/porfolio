@@ -5,6 +5,13 @@ import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
 const Experience: React.FC = () => {
+  const achievements = [
+    "Developed and maintained web applications using Laravel and CakePHP, focusing on UI and module enhancements.",
+    "In 2025 (Real Estate project), consistently met the company target of < 3% bug rate across all four quarters by creating precise test cases and improving QA coverage.",
+    "Delivered root cause analysis reports to clients, strengthening trust and service quality.",
+    "Onboarded a new team member by explaining project business logic and workflows.",
+  ];
+
   const controls = useAnimation();
   const [ref, inView] = useInView({
     threshold: 0.2,
@@ -57,11 +64,11 @@ const Experience: React.FC = () => {
         >
           <h3>Briswell Viet Nam Co., Ltd | Full-stack Developer</h3>
           <span className="period">Feb 2023 - Present</span>
-          <p>
-            Developed and maintained web applications using Laravel and CakePHP.
-            Achieved the team's lowest bug rate through precise test cases and
-            delivered root cause analysis reports to clients.
-          </p>
+          <ul className="experience-points">
+            {achievements.map((point) => (
+              <li key={point}>{point}</li>
+            ))}
+          </ul>
         </motion.div>
       </AnimatedSection>
     </section>
