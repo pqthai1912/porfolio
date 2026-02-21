@@ -1,12 +1,31 @@
-.app {
-  position: hidden;
-  overflow: visible;
-  height: 100vh;
-  width: 100vw;
-  transition: opacity 0.5s ease;
+:root {
+  --apple-black: #1d1d1f;
+  --apple-white: #f5f5f7;
+  --apple-blue: #9b6729;
+  --apple-gray: #73665b;
+  --apple-light-gray: #f5f5f7;
+  --apple-font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+  --name-font: 'Great Vibes', 'Brush Script MT', cursive;
+
+  --header-gradient-start: #5d3b24;
+  --header-gradient-end: #c79a4a;
+  --button-bg: linear-gradient(90deg, var(--header-gradient-start), var(--header-gradient-end));
+  --button-hover-shadow: 0 6px 15px rgba(93, 59, 36, 0.4);
+
+  --header-height: 56px;
+  --section-padding-y: clamp(72px, 8vw, 120px);
+  --section-padding-x: clamp(16px, 4vw, 28px);
+  --container-width: 1200px;
 }
 
-/* Loading state transitions */
+.app {
+  min-height: 100%;
+  width: 100%;
+  transition: opacity 0.4s ease;
+  background: #fff;
+  overflow-x: clip;
+}
+
 .app.loading {
   opacity: 0;
 }
@@ -16,281 +35,102 @@
 }
 
 .scroll-container {
-  overflow-y: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  /* Firefox */
-  height: calc(var(--vh) * 100);
-  scroll-behavior: smooth;
-  /* Đổi lại giá trị mặc định */
-  scroll-snap-type: y mandatory;
-  overflow-x: hidden;
-  -ms-overflow-style: none;
-  /* IE and Edge */
-  position: relative;
-}
-
-/* Thêm CSS cụ thể cho Footer trong scroll-container */
-.scroll-container>.footer {
-  scroll-snap-align: none;
-  min-height: auto;
-  height: auto;
-  padding-top: 60px;
-  padding-bottom: 24px;
-}
-
-/* Hidden scrollbar for Chrome, Safari, Opera */
-.scroll-container::-webkit-scrollbar {
-  display: none;
-}
-
-/* Apply snap effect for sections with enhanced transitions */
-.scroll-container>section {
-  height: 100vh;
-  min-height: 100vh;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0 20px;
-  padding-top: 70px;
-  /* Account for header height */
-  scroll-snap-align: start;
-  overflow-y: auto;
-  overflow-x: hidden;
+  min-height: 100%;
+  overflow: visible;
+  padding-top: var(--header-height);
+}
+
+.scroll-container > section {
+  width: 100%;
   position: relative;
-
-  /* Enhanced transitions */
-  transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1),
-    opacity 0.5s cubic-bezier(0.65, 0, 0.35, 1);
-}
-
-/* Hide scrollbars on section content */
-.scroll-container>section::-webkit-scrollbar {
-  display: none;
-}
-
-.scroll-container>section {
-  scrollbar-width: none;
-  /* Firefox */
-  -ms-overflow-style: none;
-  /* IE and Edge */
-}
-
-/* Ensure sections have IDs for scroll targeting */
-section {
-  scroll-margin-top: 52px;
-  /* Add scroll margin to account for fixed header */
-  position: relative;
-  z-index: 1;
-  transition: opacity 0.3s ease, transform 0.5s ease;
-  will-change: opacity, transform;
-}
-
-/* Fade in animation for sections as they come into view */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.scroll-container>section>* {
-  animation: fadeIn 0.6s ease-out forwards;
-}
-
-/* Responsive adjustments for mobile */
-@media (max-width: 1024px) {
-  .scroll-container {
-    scroll-snap-type: y proximity;
-    position: relative;
-  }
-
-  .scroll-container>section {
-    height: auto;
-    min-height: 100vh;
-    scroll-snap-align: start;
-    padding-bottom: 40px;
-    overflow-y: visible;
-  }
-
-  form input,
-  form textarea {
-    font-size: 16px;
-    /* Prevent zoom on iOS */
-  }
-
-  .app {
-    /* Prevent elastic scrolling in iOS */
-    overflow: visible;
-    min-height: -webkit-fill-available;
-    min-height: 100vh;
-  }
-
-  .scroll-container>section:last-child {
-    /* Extra padding for the last section to prevent content from being hidden */
-    padding-bottom: env(safe-area-inset-bottom, 80px);
-    margin-bottom: env(safe-area-inset-bottom, 0px);
-  }
-
-  /* Apply safe area insets for iOS devices */
-  @supports (-webkit-touch-callout: none) {
-    body {
-      /* Prevent elastic scrolling in iOS */
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      overscroll-behavior-y: none;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .app {
-      /* iOS needs this to work with dynamic height */
-      height: -webkit-fill-available;
-    }
-
-    .scroll-container {
-      /* Ensure content is scrollable but not stretchy */
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      overflow-y: auto;
-      height: auto;
-    }
-  }
-}
-
-:root {
-  --apple-black: #1d1d1f;
-  --apple-white: #f5f5f7;
-  --apple-blue: #0071e3;
-  --apple-gray: #86868b;
-  --apple-light-gray: #f5f5f7;
-  --apple-font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
-  --section-padding: 120px 20px;
-  --container-width: 1200px;
-
-  /* Màu gradient header */
-  --header-gradient-start: #3a1c7f;
-  --header-gradient-end: #4a56b5;
-
-  /* Màu button mới */
-  --button-bg: linear-gradient(90deg, var(--header-gradient-start), var(--header-gradient-end));
-  --button-hover-shadow: 0 6px 15px rgba(58, 28, 127, 0.4);
+  scroll-margin-top: calc(var(--header-height) + 12px);
 }
 
 .container {
-  width: 100%;
-  max-width: var(--container-width);
+  width: min(100%, var(--container-width));
   margin: 0 auto;
-  padding: 0 20px;
+  padding-inline: var(--section-padding-x);
 }
 
 .section-title {
-  font-size: 3rem;
+  font-size: clamp(2rem, 3.8vw, 3rem);
   font-weight: 600;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   text-align: center;
 }
 
 .section-subtitle {
-  font-size: 1.5rem;
+  font-size: clamp(1rem, 2.2vw, 1.5rem);
   font-weight: 400;
   color: var(--apple-gray);
   text-align: center;
   max-width: 800px;
-  margin: 0 auto 3rem;
+  margin: 0 auto 2.5rem;
 }
 
 .btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: var(--button-bg);
   color: #fff;
   padding: 12px 22px;
   border-radius: 980px;
   text-decoration: none;
-  font-weight: 400;
-  font-size: 17px;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
   border: none;
-  box-shadow: 0 4px 12px rgba(58, 28, 127, 0.2);
+  box-shadow: 0 4px 12px rgba(93, 59, 36, 0.22);
 }
 
 .btn:hover {
-  transform: translateY(-2px) scale(1.02);
+  transform: translateY(-2px);
   box-shadow: var(--button-hover-shadow);
 }
 
 .text-gradient {
-  background: linear-gradient(90deg, #007aff, #5856d6, #ff2d55);
+  background: linear-gradient(90deg, #5d3b24, #b68335, #e5c06f);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* Smooth transitions between sections */
-.scroll-container {
-  position: relative;
-  overflow-x: hidden;
-  /* Prevent horizontal overflow during animations */
+@media (max-width: 1024px) {
+  :root {
+    --header-height: 52px;
+    --section-padding-y: clamp(64px, 7vw, 88px);
+    --section-padding-x: clamp(14px, 4.2vw, 24px);
+  }
 }
 
-/* Improve form interaction */
-form {
-  isolation: isolate;
-  /* Create a stacking context */
-  position: relative;
-  z-index: 5;
-  /* Ensure form is above other elements */
+@media (max-width: 576px) {
+  :root {
+    --header-height: 52px;
+    --section-padding-y: 64px;
+    --section-padding-x: 16px;
+  }
+
+  .btn {
+    min-height: 44px;
+    width: min(320px, 100%);
+  }
 }
 
-form input,
-form textarea,
-form button {
-  will-change: transform;
-  /* Optimize performance */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 
-form input:focus,
-form textarea:focus {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Ensure animations don't interfere with scrolling */
-.contact-form {
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  perspective: 1000px;
-}
-
-/* Prevent iOS body scrolling when interacting with the form */
-body.form-active {
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-}
-
-/* Transition timing functions */
-.app .loaded {
-  transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1.000);
-}
-
-/* Ensure smoother animations on all devices */
-@media (prefers-reduced-motion: no-preference) {
-  .scroll-container {
-    scroll-behavior: smooth;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

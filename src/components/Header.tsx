@@ -22,7 +22,11 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
   // Check if device is mobile
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 834);
+      const mobile = window.innerWidth <= 834;
+      setIsMobile(mobile);
+      if (!mobile) {
+        setMenuOpen(false);
+      }
     };
     
     // Check on mount
@@ -32,6 +36,19 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Prevent background scrolling while the mobile menu is open.
+  useEffect(() => {
+    if (!menuOpen) {
+      document.body.style.overflow = "";
+      return;
+    }
+
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
 
   // Reset typing animation periodically
   useEffect(() => {
@@ -162,8 +179,8 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
       }
     };
 
-    window.addEventListener('scroll', scrollListener);
-    return () => window.removeEventListener('scroll', scrollListener);
+      window.addEventListener('scroll', scrollListener, { passive: true });
+      return () => window.removeEventListener('scroll', scrollListener);
   }, [activeSection, isTransitioning, isActivatedByClick]);
 
   // Listen for hash changes
@@ -188,7 +205,7 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
   const handleNavClick = (sectionId: string, event: React.MouseEvent) => {
     event.preventDefault();
     
-    if (isTransitioning || activeSection === sectionId) return;
+    if (isTransitioning) return;
     
     // Set transitioning state to prevent multiple clicks
     setIsTransitioning(true);
@@ -212,13 +229,13 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
       isScrollingProgrammatically.current = true;
       
       // Use scrollIntoView for better snap effect
-      targetElement.scrollIntoView({ behavior: 'smooth' });
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
       
       // Reset transitioning state after animation completes
       setTimeout(() => {
         setIsTransitioning(false);
         isScrollingProgrammatically.current = false;
-      }, 800); // Slightly longer than transition duration
+      }, 650);
     } else {
       setIsTransitioning(false);
     }
@@ -239,6 +256,7 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
           className={`mobile-menu-btn ${menuOpen ? 'open' : ''}`} 
           onClick={toggleMenu}
           aria-label="Toggle menu"
+          aria-expanded={menuOpen}
         >
           <span></span>
           <span></span>

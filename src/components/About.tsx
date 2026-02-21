@@ -19,7 +19,7 @@ const About: React.FC = () => {
     const targetElement = document.getElementById(sectionId);
     if (targetElement) {
       // Use scrollIntoView for better snap effect
-      targetElement.scrollIntoView({ behavior: 'smooth' });
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
@@ -33,13 +33,15 @@ const About: React.FC = () => {
       }
     }, { threshold: 0.2 }); // Trigger when 20% of the element is visible
 
-    if (aboutRef.current) {
-      observer.observe(aboutRef.current);
+    const observedElement = aboutRef.current;
+
+    if (observedElement) {
+      observer.observe(observedElement);
     }
 
     return () => {
-      if (aboutRef.current) {
-        observer.unobserve(aboutRef.current);
+      if (observedElement) {
+        observer.unobserve(observedElement);
       }
     };
   }, []);
@@ -72,7 +74,7 @@ const About: React.FC = () => {
           <h6>About Me</h6>
           <h2>Dedicated PHP Developer</h2>
           <p className="tagline">
-            With 2 years of experience crafting exceptional web experiences
+            With 3 years of experience crafting exceptional web experiences
           </p>
         </div>
         

@@ -1,28 +1,10 @@
-/**
- * Cải thiện trải nghiệm trên thiết bị di động
- */
-
-/* Thiết lập đơn giản cho thiết bị di động */
+/* Mobile-specific layout safety tweaks */
 @media (max-width: 768px) {
+  .scroll-container > section {
+    scroll-margin-top: calc(var(--header-height) + 8px);
+  }
 
-    /* Cho phép vuốt cơ bản */
-    .scroll-container {
-        overflow-y: auto;
-        height: 100vh;
-    }
-
-    /* Cho phép các phần tử có chiều cao tự động */
-    .scroll-container>section {
-        height: auto;
-        min-height: 100vh;
-    }
-
-    /* Tăng padding để nội dung dễ nhìn hơn */
-    .education,
-    .projects,
-    .skills,
-    .experience,
-    .certifications {
-        padding-bottom: 30px;
-    }
+  .container {
+    padding-inline: clamp(14px, 4vw, 18px);
+  }
 }

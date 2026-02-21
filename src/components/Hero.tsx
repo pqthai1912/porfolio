@@ -17,7 +17,7 @@ const Hero: React.FC = () => {
     const targetElement = document.getElementById(sectionId);
     if (targetElement) {
       // Use scrollIntoView for better snap effect
-      targetElement.scrollIntoView({ behavior: 'smooth' });
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 

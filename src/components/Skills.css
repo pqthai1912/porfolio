@@ -1,36 +1,46 @@
 .skills {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 4rem 2rem;
-    background-color: #f2f2f2;
-    text-align: center;
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--section-padding-y) var(--section-padding-x);
+  background-color: #f2f2f2;
+  text-align: center;
 }
 
 .skills h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    color: #333;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  margin-bottom: clamp(18px, 4vw, 30px);
+  color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .skills-list {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(8px, 1.8vw, 14px);
+  padding: 0;
+  max-width: 900px;
 }
 
 .skill-item {
-    background: #1a1a1a;
-    color: #fff;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 1.1rem;
-    font-weight: 500;
+  background: #1a1a1a;
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+@media (max-width: 768px) {
+  .skills {
+    padding: 64px 16px;
+  }
+
+  .skills-list {
+    gap: 8px;
+  }
 }

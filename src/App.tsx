@@ -18,8 +18,8 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [currentSection, setCurrentSection] = useState<string | null>(null);
+  const hasAppliedInitialHash = useRef(false);
 
   // Handle initial loading transition
   useEffect(() => {
@@ -31,20 +31,25 @@ const App: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Handle initial URL hash on page load
+  // Handle initial URL hash on page load.
   useEffect(() => {
-    const hash = window.location.hash.replace('#', '');
-    if (hash) {
-      setCurrentSection(hash);
-      // Slight delay to ensure components are mounted
-      setTimeout(() => {
-        const element = document.getElementById(hash);
-        if (element) {
-          // Use scrollIntoView for consistency with navigation
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 500); // Longer delay to ensure proper rendering
-    }
+    if (hasAppliedInitialHash.current) return;
+
+    const hash = window.location.hash.replace("#", "");
+    if (!hash) return;
+
+    setCurrentSection(hash);
+    hasAppliedInitialHash.current = true;
+
+    // Delay until initial render completes so anchor scrolling lands correctly.
+    const timer = window.setTimeout(() => {
+      const element = document.getElementById(hash);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 350);
+
+    return () => window.clearTimeout(timer);
   }, []);
 
   // Track visible sections during scroll
@@ -56,7 +61,7 @@ const App: React.FC = () => {
             setCurrentSection(entry.target.id);
             // Update URL hash without scrolling
             const currentUrl = window.location.pathname + window.location.search;
-            window.history.replaceState(null, '', currentUrl + '#' + entry.target.id);
+            window.history.replaceState(null, "", `${currentUrl}#${entry.target.id}`);
           }
         });
       },
@@ -74,17 +79,7 @@ const App: React.FC = () => {
         observer.unobserve(section);
       });
     };
-  }, [isLoading]); // Run after initial loading
-
-  // Đơn giản hóa xử lý sự kiện touch trên thiết bị di động
-  useEffect(() => {
-    // Bỏ việc xử lý sự kiện phức tạp để quay lại hoạt động cơ bản
-    const enableScrolling = () => {
-      document.body.style.overflow = 'auto';
-    };
-    
-    enableScrolling();
-  }, []);
+  }, [isLoading]); // Run after initial loading.
 
   // Preload key images for smoother experience
   useEffect(() => {
@@ -102,14 +97,6 @@ const App: React.FC = () => {
     };
     
     preloadImages();
-  }, []);
-
-  useEffect(() => {
-    const setVh = () => {
-      document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
-    };
-    window.addEventListener('resize', setVh);
-    setVh();
   }, []);
 
   const pageTransition = {
@@ -131,7 +118,6 @@ const App: React.FC = () => {
       <AnimatePresence mode="wait">
         <motion.main 
           className="scroll-container" 
-          ref={scrollContainerRef}
           variants={pageTransition}
           initial="hidden"
           animate="visible"

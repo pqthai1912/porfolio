@@ -16,7 +16,6 @@ const ContactMe: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{success?: boolean; message: string} | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
-  const contactSectionRef = useRef<HTMLElement>(null);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -79,67 +78,6 @@ const ContactMe: React.FC = () => {
     };
   }, [submitStatus]);
 
-  // Add event capture for scroll events to prevent propagation
-  useEffect(() => {
-    const formElement = formRef.current;
-    
-    const handleScroll = (e: Event) => {
-      // Only prevent default if we're interacting with the form
-      if (document.activeElement && formElement?.contains(document.activeElement)) {
-        e.stopPropagation();
-      }
-    };
-    
-    if (formElement) {
-      formElement.addEventListener('wheel', handleScroll, { passive: false });
-      formElement.addEventListener('touchmove', handleScroll, { passive: false });
-    }
-    
-    return () => {
-      if (formElement) {
-        formElement.removeEventListener('wheel', handleScroll);
-        formElement.removeEventListener('touchmove', handleScroll);
-      }
-    };
-  }, []);
-
-  // Adjust for mobile browsers with bottom URL bars
-  useEffect(() => {
-    const adjustContactSection = () => {
-      if (contactSectionRef.current) {
-        const isMobile = window.innerWidth <= 768;
-        
-        if (isMobile) {
-          // Detect if browser likely has bottom URL bar
-          const windowHeight = window.innerHeight;
-          const documentHeight = document.documentElement.clientHeight;
-          const hasBottomBar = windowHeight < documentHeight;
-          
-          if (hasBottomBar) {
-            // Add extra padding at the bottom to ensure content is visible
-            contactSectionRef.current.style.paddingBottom = '100px';
-            
-            // Also ensure the footer wrapper has enough space
-            const footerWrapper = contactSectionRef.current.querySelector('.footer-wrapper');
-            if (footerWrapper instanceof HTMLElement) {
-              footerWrapper.style.marginBottom = '80px';
-            }
-          }
-        }
-      }
-    };
-    
-    // Run on mount and window resize
-    adjustContactSection();
-    window.addEventListener('resize', adjustContactSection);
-    window.addEventListener('orientationchange', adjustContactSection);
-    
-    return () => {
-      window.removeEventListener('resize', adjustContactSection);
-      window.removeEventListener('orientationchange', adjustContactSection);
-    };
-  }, []);
-
   const formVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { 
@@ -153,7 +91,7 @@ const ContactMe: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="contact-section" ref={contactSectionRef}>
+    <section id="contact" className="contact-section">
       <div className="container">
         <div className="contact-headline">
           <h6>Get in Touch</h6>

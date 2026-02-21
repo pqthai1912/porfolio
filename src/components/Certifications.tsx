@@ -21,14 +21,14 @@ const Certifications: React.FC = () => {
       title: "Web Applications for Everybody Specialization",
       organization: "University of Michigan",
       pdfPath: "/porfolio/Certificate_1.pdf",
-      bgColor: "#3498db"
+      bgColor: "#b9883c"
     },
     {
       id: 2,
       title: "HTML, CSS, and JavaScript for Web Developers",
       organization: "Johns Hopkins University",
       pdfPath: "/porfolio/Certificate_2.pdf",
-      bgColor: "#2ecc71"
+      bgColor: "#8f5b2c"
     }
   ];
 
@@ -54,12 +54,12 @@ const Certifications: React.FC = () => {
 
   useEffect(() => {
     if (isModalOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "";
     };
   }, [isModalOpen]);
 

@@ -23,17 +23,27 @@ const Education: React.FC = () => {
   // Lock scrolling when modal is open
   useEffect(() => {
     if (isImageExpanded) {
-      document.body.style.setProperty('overflow', 'hidden', 'important');
-      document.body.style.setProperty('position', 'fixed', 'important');
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
-      document.body.style.position = '';
+      document.body.style.overflow = "";
     }
     
     return () => {
-      document.body.style.overflow = '';
-      document.body.style.position = '';
+      document.body.style.overflow = "";
     };
+  }, [isImageExpanded]);
+
+  useEffect(() => {
+    if (!isImageExpanded) return;
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsImageExpanded(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
   }, [isImageExpanded]);
 
   const titleVariants = {
