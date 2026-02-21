@@ -10,13 +10,10 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
-  // Add a state to track if activeSection is from click
-  const [isActivatedByClick, setIsActivatedByClick] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const typingRef = useRef<HTMLDivElement>(null);
   const lastUpdatedHash = useRef<string>('home');
-  // Add a flag to prevent scroll handling during programmatic scrolls
   const isScrollingProgrammatically = useRef<boolean>(false);
 
   // Check if device is mobile
@@ -84,7 +81,7 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
       // Set active menu based on hash
       setActiveSection(hash);
       lastUpdatedHash.current = hash;
-      
+
       // Scroll to corresponding section
       const element = document.getElementById(hash);
       if (element) {
@@ -104,11 +101,10 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
   useEffect(() => {
     if (currentSection) {
       setActiveSection(currentSection);
-      setIsActivatedByClick(true); // Assume currentSection is from a click
     }
   }, [currentSection]);
 
-  // Improved scroll handler with better section detection
+  // Update active nav item while scrolling based on most visible section.
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -119,12 +115,6 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
       
       // Don't update active section during transitions or programmatic scrolls
       if (isTransitioning || isScrollingProgrammatically.current) return;
-      
-      // CHANGE: Set isActivatedByClick to false during scroll
-      // This ensures active state is removed during scrolling
-      if (isActivatedByClick) {
-        setIsActivatedByClick(false);
-      }
       
       const sections = [
         'home', 'about', 'projects', 'skills', 
@@ -160,7 +150,13 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
         }
       }
       
-      // CHANGE: Only update URL hash, but don't set active section during scroll
+      // Keep active anchor in sync with visible section.
+      if (maxVisibleSection.visiblePixels > 0) {
+        setActiveSection((previous) =>
+          previous === maxVisibleSection.id ? previous : maxVisibleSection.id
+        );
+      }
+
       if (maxVisibleSection.id !== lastUpdatedHash.current) {
         lastUpdatedHash.current = maxVisibleSection.id;
         window.history.replaceState(null, '', `#${maxVisibleSection.id}`);
@@ -179,9 +175,9 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
       }
     };
 
-      window.addEventListener('scroll', scrollListener, { passive: true });
-      return () => window.removeEventListener('scroll', scrollListener);
-  }, [activeSection, isTransitioning, isActivatedByClick]);
+    window.addEventListener('scroll', scrollListener, { passive: true });
+    return () => window.removeEventListener('scroll', scrollListener);
+  }, [isTransitioning]);
 
   // Listen for hash changes
   useEffect(() => {
@@ -212,8 +208,6 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
     
     // Set active section immediately for better UX
     setActiveSection(sectionId);
-    // CHANGE: Mark this as activated by click
-    setIsActivatedByClick(true);
     lastUpdatedHash.current = sectionId;
     
     // Close mobile menu if open
@@ -268,7 +262,7 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
             <li>
               <a 
                 href="#home" 
-                className={activeSection === 'home' && isActivatedByClick ? 'active' : ''}
+                className={activeSection === 'home' ? 'active' : ''}
                 onClick={(e) => handleNavClick('home', e)}
               >
                 Home
@@ -277,7 +271,7 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
             <li>
               <a 
                 href="#about" 
-                className={activeSection === 'about' && isActivatedByClick ? 'active' : ''}
+                className={activeSection === 'about' ? 'active' : ''}
                 onClick={(e) => handleNavClick('about', e)}
               >
                 About Me
@@ -286,7 +280,7 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
             <li>
               <a 
                 href="#projects" 
-                className={activeSection === 'projects' && isActivatedByClick ? 'active' : ''}
+                className={activeSection === 'projects' ? 'active' : ''}
                 onClick={(e) => handleNavClick('projects', e)}
               >
                 Projects
@@ -295,7 +289,7 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
             <li>
               <a 
                 href="#skills" 
-                className={activeSection === 'skills' && isActivatedByClick ? 'active' : ''}
+                className={activeSection === 'skills' ? 'active' : ''}
                 onClick={(e) => handleNavClick('skills', e)}
               >
                 Skills
@@ -304,7 +298,7 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
             <li>
               <a 
                 href="#experience" 
-                className={activeSection === 'experience' && isActivatedByClick ? 'active' : ''}
+                className={activeSection === 'experience' ? 'active' : ''}
                 onClick={(e) => handleNavClick('experience', e)}
               >
                 Experience
@@ -313,7 +307,7 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
             <li>
               <a 
                 href="#certifications" 
-                className={activeSection === 'certifications' && isActivatedByClick ? 'active' : ''}
+                className={activeSection === 'certifications' ? 'active' : ''}
                 onClick={(e) => handleNavClick('certifications', e)}
               >
                 Certifications
@@ -322,7 +316,7 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
             <li className="mobile-hide">
               <a 
                 href="#english-ability" 
-                className={activeSection === 'english-ability' && isActivatedByClick ? 'active' : ''}
+                className={activeSection === 'english-ability' ? 'active' : ''}
                 onClick={(e) => handleNavClick('english-ability', e)}
               >
                 Languages
@@ -331,7 +325,7 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
             <li className="mobile-hide">
               <a 
                 href="#education" 
-                className={activeSection === 'education' && isActivatedByClick ? 'active' : ''}
+                className={activeSection === 'education' ? 'active' : ''}
                 onClick={(e) => handleNavClick('education', e)}
               >
                 Education
@@ -340,7 +334,7 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
             <li>
               <a 
                 href="#contact" 
-                className={`contact-link ${activeSection === 'contact' && isActivatedByClick ? 'active-contact' : ''}`}
+                className={`contact-link ${activeSection === 'contact' ? 'active-contact' : ''}`}
                 onClick={(e) => handleNavClick('contact', e)}
                 onMouseEnter={() => {
                   if (typingRef.current) {
