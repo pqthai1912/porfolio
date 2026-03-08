@@ -89,7 +89,7 @@ const About: React.FC = () => {
           <h6>About Me</h6>
           <h2>Dedicated PHP Developer</h2>
           <p className="tagline">
-            3 years of full-stack experience with Laravel and CakePHP
+            3 years of full-stack web development expertise in Laravel and CakePHP
           </p>
         </div>
         
@@ -118,11 +118,11 @@ const About: React.FC = () => {
           
           <div className="about-text">
             <p>
-              Dedicated PHP Developer with 3 years of full-stack web development experience, specializing in Laravel and CakePHP. Experienced in building and maintaining web applications using HTML, CSS, JavaScript, MySQL, Git, Docker, and AWS services.
+              PHP Developer with 3 years of full-stack web development experience, specializing in Laravel and CakePHP. Proven experience in building and maintaining web applications using HTML, CSS, JavaScript, MySQL, Git, Docker, and AWS S3.
             </p>
             
             <p>
-              I focus on clean, maintainable code with strong attention to performance, security, and user experience. My long-term goal is to grow into a Vietnam-Japan BrSE by improving Japanese communication, requirement clarification, and cross-team collaboration.
+              Committed to delivering clean and maintainable code with strong attention to performance, security, and user experience. Career objective for the next 2 to 3 years is to progress into a Team Leader role by strengthening technical leadership, ownership, and mentoring capabilities.
             </p>
             
             <div className="about-stats" ref={statsRef}>

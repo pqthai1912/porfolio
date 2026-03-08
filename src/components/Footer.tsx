@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
           <div className="footer-column">
             <h3 className="footer-title">Phan Quang Thai</h3>
             <p className="footer-description">
-              PHP Developer with 3 years of full-stack experience in Laravel and CakePHP, focused on clean code and reliable delivery.
+              PHP Developer with 3 years of full-stack web development experience in Laravel and CakePHP, committed to clean, maintainable code and reliable delivery.
             </p>
           </div>
           

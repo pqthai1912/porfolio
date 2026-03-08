@@ -33,7 +33,7 @@ const Hero: React.FC = () => {
           </h1>
           
           <p className="hero-description">
-            Building maintainable Laravel/CakePHP systems and growing toward a Vietnam-Japan BrSE role.
+            Delivering maintainable Laravel and CakePHP solutions while progressing toward a Team Leader role.
           </p>
           
           <div className="hero-cta">
