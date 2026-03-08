@@ -62,11 +62,12 @@ const projects: Project[] = [
     title: "Employee Evaluation System",
     period: "Jan 2026 - Present",
     description:
-      "Delivered end-to-end implementation with Inertia.js and Vue.js in an AI-assisted workflow.",
+      "Developing an employee evaluation system with Laravel, Inertia.js, Vue.js, and MySQL within an AI-assisted development workflow.",
     technologies: "PHP, Laravel, Inertia.js, Vue.js, MySQL",
     highlights: [
-      "Handled migrations, coding, test cases, and testing from start to release.",
-      "Improved delivery efficiency by managing multiple tasks concurrently.",
+      "Delivered end-to-end features covering database migrations, implementation, test case design, and functional testing.",
+      "Reviewed AI-generated code, provided technical feedback, and recommended optimizations to strengthen code quality and maintainability.",
+      "Maintained delivery efficiency by managing concurrent tasks and sustaining consistent progress across parallel workstreams.",
     ],
   },
 ];
