@@ -87,9 +87,9 @@ const About: React.FC = () => {
       <div className="container">
         <div className="about-headline">
           <h6>About Me</h6>
-          <h2>Dedicated PHP Developer</h2>
+          <h2>Backend-focused Software Engineer</h2>
           <p className="tagline">
-            3 years of full-stack web development expertise in Laravel and CakePHP
+            Full-stack web development experience with strong PHP, Laravel, CakePHP, and database foundations
           </p>
         </div>
         
@@ -118,11 +118,11 @@ const About: React.FC = () => {
           
           <div className="about-text">
             <p>
-              PHP Developer with 3 years of full-stack web development experience, specializing in Laravel and CakePHP. Proven experience in building and maintaining web applications using HTML, CSS, JavaScript, MySQL, Git, Docker, and AWS S3.
+              Software Engineer with 3 years of full-stack web development experience, specializing in PHP, Laravel, CakePHP, and MySQL. Experienced in maintaining production systems, developing business modules, improving data integrity, analyzing query performance, and supporting clients through root cause analysis.
             </p>
             
             <p>
-              Committed to delivering clean and maintainable code with strong attention to performance, security, and user experience. Career objective for the next 2 to 3 years is to progress into a Team Leader role by strengthening technical leadership, ownership, and mentoring capabilities.
+              Seeking a challenging engineering environment where I can strengthen technical ownership and grow from a backend-focused developer into a well-rounded Software Engineer, with a long-term goal of becoming a Sub Leader or Team Leader.
             </p>
             
             <div className="about-stats" ref={statsRef}>
@@ -131,12 +131,12 @@ const About: React.FC = () => {
                 <span className="stat-label">Years Experience</span>
               </div>
               <div className="stat">
-                <span className={`stat-number ${getStatClass(1)}`}>5+</span>
-                <span className="stat-label">Projects Delivered</span>
+                <span className={`stat-number ${getStatClass(1)}`}>3+</span>
+                <span className="stat-label">Production Systems</span>
               </div>
               <div className="stat">
-                <span className={`stat-number ${getStatClass(2)}`}>{"<3%"}</span>
-                <span className="stat-label">2025 Bug Rate</span>
+                <span className={`stat-number ${getStatClass(2)}`}>SQL</span>
+                <span className="stat-label">Performance Focus</span>
               </div>
             </div>
             

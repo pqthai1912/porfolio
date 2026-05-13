@@ -20,15 +20,15 @@ const skillGroups: SkillGroup[] = [
   },
   {
     title: "Frontend",
-    items: ["HTML", "CSS", "jQuery", "Vue.js", "Inertia.js"],
+    items: ["jQuery", "Vue.js"],
   },
   {
     title: "Databases",
     items: ["MySQL", "PostgreSQL"],
   },
   {
-    title: "Tools",
-    items: ["Git", "Docker"],
+    title: "Tools & Platforms",
+    items: ["Git", "Docker", "Linux"],
   },
   {
     title: "Cloud (AWS)",
@@ -40,7 +40,7 @@ const skillGroups: SkillGroup[] = [
       "Problem-solving",
       "Collaboration",
       "Customer support",
-      "Business logic communication",
+      "Explaining business logic",
     ],
   },
 ];

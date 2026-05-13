@@ -27,13 +27,13 @@ const Hero: React.FC = () => {
         <div className="hero-text">
           <h1>
             <span className="hero-subtitle">Phan Quang Thai</span>
-            <span className="hero-title">PHP Developer.</span>
+            <span className="hero-title">Software Engineer.</span>
+            <span className="hero-title">Full-stack Developer.</span>
             <span className="hero-title">Problem Solver.</span>
-            <span className="hero-title">Creator.</span>
           </h1>
           
           <p className="hero-description">
-            Delivering maintainable Laravel and CakePHP solutions while progressing toward a Team Leader role.
+            Building maintainable Laravel and CakePHP systems while strengthening technical ownership and leadership.
           </p>
           
           <div className="hero-cta">

@@ -15,59 +15,39 @@ type Project = {
 
 const projects: Project[] = [
   {
-    title: "Corporate Food Ordering System",
-    period: "Sep 2023 - Jan 2024",
-    description:
-      "Engineered a food ordering system for corporate clients using PHP (Laravel), jQuery, MySQL, and Amazon S3.",
-    technologies: "PHP, Laravel, JQuery, MySQL, Amazon S3",
-    highlights: [
-      "Implemented features for delivery operations and invoicing.",
-      "Ensured system stability and performance through regular monitoring.",
-    ],
-  },
-  {
     title: "Real Estate Management Platform",
     period: "Apr 2023 - Dec 2025",
     description:
-      "Managed real estate properties and services using PHP (CakePHP), jQuery, MySQL, Amazon S3, and Docker.",
-    technologies: "PHP, CakePHP, JQuery, MySQL, Docker, Amazon S3",
+      "Maintained and enhanced a production real estate management platform, with a focus on module stability, performance, and client support.",
+    technologies: "PHP, CakePHP, jQuery, MySQL, Docker, Amazon S3",
     highlights: [
-      "Resolved Amazon S3 retrieval errors for over 1,000 objects, improving system reliability.",
-      "Oversaw system maintenance, feature development, version upgrades, and customer support.",
-    ],
-  },
-  {
-    title: "Restaurant Management System",
-    period: "Apr 2024 - Aug 2024",
-    description:
-      "Built a reservation and pre-order system using PHP (CakePHP), jQuery, Vue, PostgreSQL, and Amazon S3.",
-    technologies: "PHP, CakePHP, JQuery, Vue, PostgreSQL, Amazon S3",
-    highlights: [
-      "Introduced a queue management feature to assign and display ticket numbers.",
-      "Sustained and added new features to improve user experience.",
+      "Optimized slow SQL queries by reviewing execution plans and improving filtering conditions, reducing query execution time from 30 minutes to 0.3 seconds.",
+      "Investigated S3 object listing behavior, identified the pagination and continuation issue, and adjusted retrieval logic to process objects beyond the first 1,000 results.",
+      "Maintained and enhanced existing modules, handled version upgrades, and provided root cause analysis reports for client-side issues.",
     ],
   },
   {
     title: "Electric Charger Management System",
-    period: "Sep 2024 - Dec 2025",
+    period: "Sep 2023 - Dec 2025",
     description:
-      "Created a sub-module for managing electric chargers using PHP (Laravel), jQuery, MySQL, and Amazon S3.",
-    technologies: "PHP, Laravel, JQuery, MySQL, Amazon S3",
+      "Developed and improved stock-related workflows for an electric charger management system, with emphasis on concurrency control and data integrity.",
+    technologies: "PHP, Laravel, jQuery, MySQL, Amazon S3",
     highlights: [
-      "Evaluated and applied pessimistic and optimistic locking to prevent concurrent updates.",
-      "Crafted intuitive UI that maintained data integrity during stock operations.",
+      "Analyzed use cases and evaluated both pessimistic locking and optimistic locking strategies.",
+      "Applied locking strategies based on update conflict risk: pessimistic locking secures data before updates, while optimistic locking allows concurrent reads and validates data versions before updates.",
+      "Designed UI flows to reduce invalid operations and maintain data integrity during stock-related actions.",
     ],
   },
   {
     title: "Employee Evaluation System",
-    period: "Jan 2026 - Present",
+    period: "Dec 2025 - Present",
     description:
-      "Developing an employee evaluation system with Laravel, Inertia.js, Vue.js, and MySQL within an AI-assisted development workflow.",
+      "Building an employee evaluation system by translating implementation plans into backend logic, database changes, frontend screens, and test coverage.",
     technologies: "PHP, Laravel, Inertia.js, Vue.js, MySQL",
     highlights: [
-      "Delivered end-to-end features covering database migrations, implementation, test case design, and functional testing.",
-      "Reviewed AI-generated code, provided technical feedback, and recommended optimizations to strengthen code quality and maintainability.",
-      "Maintained delivery efficiency by managing concurrent tasks and sustaining consistent progress across parallel workstreams.",
+      "Read and analyzed implementation plans, clarified business logic, and broke requirements into database migrations, backend logic, frontend screens, and test cases.",
+      "Used AI-assisted workflows to speed up implementation, generate initial code ideas, and support repetitive development tasks.",
+      "Reviewed AI-generated code manually, provided technical feedback, corrected logic, and optimized code quality before integration.",
     ],
   },
 ];
