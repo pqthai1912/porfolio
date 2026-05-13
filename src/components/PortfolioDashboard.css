@@ -107,6 +107,11 @@
   padding: clamp(16px, 1.25vw, 28px);
   display: grid;
   grid-template-columns: repeat(16, minmax(0, 1fr));
+  grid-auto-rows: auto;
+  grid-template-areas:
+    "intro intro intro intro intro intro portrait portrait portrait portrait about about about experience experience experience"
+    "projects projects projects projects projects projects projects projects skills skills skills achievement achievement connect connect connect"
+    "footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer";
   gap: clamp(12px, 0.8vw, 18px);
   align-content: stretch;
   box-sizing: border-box;
@@ -140,7 +145,7 @@
 }
 
 .intro-panel {
-  grid-column: span 6;
+  grid-area: intro;
   min-height: 480px;
   padding: clamp(28px, 3vw, 56px);
   display: flex;
@@ -278,7 +283,7 @@
 }
 
 .portrait-panel {
-  grid-column: span 4;
+  grid-area: portrait;
   min-height: 480px;
   width: 100%;
   justify-self: stretch;
@@ -381,12 +386,12 @@
 }
 
 .about-panel {
-  grid-column: span 3;
+  grid-area: about;
   min-height: 480px;
 }
 
 .experience-panel {
-  grid-column: span 3;
+  grid-area: experience;
   min-height: 480px;
 }
 
@@ -541,7 +546,7 @@
 }
 
 .projects-panel {
-  grid-column: span 8;
+  grid-area: projects;
   padding: 24px;
 }
 
@@ -639,7 +644,7 @@
 }
 
 .skills-panel {
-  grid-column: span 3;
+  grid-area: skills;
 }
 
 .skill-matrix {
@@ -724,7 +729,7 @@
 }
 
 .achievement-panel {
-  grid-column: span 2;
+  grid-area: achievement;
 }
 
 .achievement-panel ul {
@@ -751,7 +756,7 @@
 }
 
 .connect-panel {
-  grid-column: span 3;
+  grid-area: connect;
 }
 
 .social-list {
@@ -790,7 +795,7 @@
 }
 
 .dashboard-footer {
-  grid-column: span 16;
+  grid-area: footer;
   min-height: 58px;
   display: flex;
   align-items: center;
@@ -816,6 +821,10 @@
     min-height: 100dvh;
     align-content: stretch;
     grid-template-rows: auto auto auto;
+    grid-template-areas:
+      "intro intro intro intro intro intro intro portrait portrait portrait about about about experience experience experience"
+      "projects projects projects projects projects projects projects projects skills skills skills achievement achievement connect connect connect"
+      "footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer";
     gap: clamp(12px, 0.8vw, 18px);
   }
 
@@ -833,56 +842,16 @@
     min-height: clamp(420px, 42vh, 560px);
   }
 
-  .intro-panel {
-    grid-column: span 7;
-  }
-
-  .portrait-panel {
-    grid-column: span 3;
-  }
-
-  .about-panel,
-  .experience-panel {
-    grid-column: span 3;
-  }
-
-  .projects-panel {
-    grid-column: span 8;
-  }
-
-  .skills-panel {
-    grid-column: span 3;
-  }
-
-  .achievement-panel {
-    grid-column: span 2;
-  }
-
-  .connect-panel {
-    grid-column: span 3;
-  }
-
-  .dashboard-footer {
-    grid-column: span 16;
-  }
 }
 
 /* Wide-but-not-ultrawide screens need more horizontal room for achievement text. */
 @media (min-width: 1501px) and (max-width: 2399px) {
-  .projects-panel {
-    grid-column: span 10;
-  }
-
-  .skills-panel {
-    grid-column: span 6;
-  }
-
-  .achievement-panel {
-    grid-column: span 8;
-  }
-
-  .connect-panel {
-    grid-column: span 8;
+  .dashboard-canvas {
+    grid-template-areas:
+      "intro intro intro intro intro intro intro portrait portrait portrait portrait portrait about about about about"
+      "experience experience experience experience experience experience projects projects projects projects projects projects projects projects projects projects"
+      "skills skills skills skills skills skills achievement achievement achievement achievement achievement connect connect connect connect connect"
+      "footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer";
   }
 
   .achievement-panel li {
@@ -914,36 +883,11 @@
 @media (max-width: 1500px) {
   .dashboard-canvas {
     grid-template-columns: repeat(12, minmax(0, 1fr));
-  }
-
-  .intro-panel {
-    grid-column: span 6;
-  }
-
-  .portrait-panel,
-  .about-panel,
-  .skills-panel {
-    grid-column: span 3;
-  }
-
-  .experience-panel {
-    grid-column: span 4;
-  }
-
-  .projects-panel {
-    grid-column: span 8;
-  }
-
-  .skills-panel {
-    grid-column: span 4;
-  }
-
-  .achievement-panel {
-    grid-column: span 4;
-  }
-
-  .connect-panel {
-    grid-column: span 4;
+    grid-template-areas:
+      "intro intro intro intro intro intro portrait portrait portrait about about about"
+      "experience experience experience experience projects projects projects projects projects projects projects projects"
+      "skills skills skills skills achievement achievement achievement achievement connect connect connect connect"
+      "footer footer footer footer footer footer footer footer footer footer footer footer";
   }
 
   .achievement-panel li {
@@ -954,9 +898,6 @@
     display: none;
   }
 
-  .dashboard-footer {
-    grid-column: span 12;
-  }
 }
 
 /* 3. Tablet screens: move navigation to the top and stack major panels. */
@@ -1006,13 +947,30 @@
   .achievement-panel,
   .connect-panel,
   .dashboard-footer {
-    grid-column: span 12;
+    width: 100%;
+  }
+
+  .dashboard-canvas {
+    grid-template-areas:
+      "intro intro intro intro intro intro intro intro intro intro intro intro"
+      "portrait portrait portrait portrait portrait portrait portrait portrait portrait portrait portrait portrait"
+      "about about about about about about about about about about about about"
+      "experience experience experience experience experience experience experience experience experience experience experience experience"
+      "projects projects projects projects projects projects projects projects projects projects projects projects"
+      "skills skills skills skills skills skills skills skills skills skills skills skills"
+      "achievement achievement achievement achievement achievement achievement achievement achievement achievement achievement achievement achievement"
+      "connect connect connect connect connect connect connect connect connect connect connect connect"
+      "footer footer footer footer footer footer footer footer footer footer footer footer";
   }
 
   .portrait-panel {
-    min-height: 520px;
-    width: min(100%, 460px);
-    justify-self: center;
+    min-height: min(86.4vw, 864px);
+    width: 100%;
+    justify-self: stretch;
+  }
+
+  .portrait-frame {
+    inset: 14px;
   }
 
   .project-grid {
@@ -1051,7 +1009,7 @@
   }
 
   .portrait-panel {
-    min-height: min(112vw, 520px);
+    min-height: min(144vw, 768px);
     width: 100%;
     justify-self: stretch;
   }
@@ -1210,7 +1168,7 @@
   }
 
   .portrait-panel {
-    min-height: min(124vw, 520px);
+    min-height: min(158.4vw, 744px);
     width: 100%;
     justify-self: stretch;
     padding: 14px;
