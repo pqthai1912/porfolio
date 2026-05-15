@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaAws,
   FaBriefcase,
@@ -7,8 +7,11 @@ import {
   FaDocker,
   FaEnvelope,
   FaExternalLinkAlt,
+  FaCertificate,
   FaGithub,
+  FaGraduationCap,
   FaHome,
+  FaLanguage,
   FaLaptopCode,
   FaLinkedin,
   FaMapMarkerAlt,
@@ -34,12 +37,27 @@ type Project = {
   tags: string[];
 };
 
-type ExperienceItem = {
-  role: string;
-  project: string;
+type ResumeEntry = {
+  title: string;
   period: string;
-  summary: string;
-  tags: string[];
+  bullets?: string[];
+};
+
+type ExperienceHighlight = {
+  label: string;
+  value: string;
+  detail: string;
+  icon: React.ReactNode;
+};
+
+type CredentialGroup = {
+  title: string;
+  icon: React.ReactNode;
+  items: {
+    title: string;
+    meta: string;
+    detail?: string;
+  }[];
 };
 
 const navItems: NavItem[] = [
@@ -89,30 +107,86 @@ const projects: Project[] = [
   },
 ];
 
-const experiences: ExperienceItem[] = [
+const workExperienceEntries: ResumeEntry[] = [
   {
-    role: "Software Engineer",
-    project: "Employee Evaluation System",
-    period: "2025 - Present",
-    summary:
-      "Clarifies business logic, breaks requirements into implementation units, and reviews AI-assisted code before integration.",
-    tags: ["Laravel", "Vue.js", "AI Review"],
+    title: "Briswell Viet Nam Co., Ltd | Full-stack Developer",
+    period: "Feb 2023 - Present",
+    bullets: [
+      "Developed and maintained production web applications using Laravel, CakePHP, MySQL, JavaScript, Docker, and AWS services.",
+      "Handled feature development, maintenance, version upgrades, customer support, and root cause analysis for production issues.",
+      "In the 2025 Real Estate project, consistently met the company target of < 3% bug rate across all four quarters by improving test case quality and QA coverage.",
+      "Supported team onboarding by explaining business logic, workflows, and project-specific implementation details.",
+    ],
+  },
+];
+
+const experienceStack = ["Laravel", "CakePHP", "MySQL", "JavaScript", "Docker", "AWS"];
+
+const experienceHighlights: ExperienceHighlight[] = [
+  {
+    label: "Production Scope",
+    value: "Web Applications",
+    detail: "Feature development, maintenance, version upgrades, customer support, and RCA.",
+    icon: <FaServer />,
   },
   {
-    role: "Full-stack Developer",
-    project: "Real Estate Platform",
-    period: "2023 - 2025",
-    summary:
-      "Maintained production modules, improved SQL performance, investigated S3 object retrieval issues, and supported client-facing RCA.",
-    tags: ["CakePHP", "MySQL", "AWS S3"],
+    label: "Quality Signal",
+    value: "< 3% Bug Rate",
+    detail: "2025 Real Estate project target met across all four quarters with stronger test cases and QA coverage.",
+    icon: <FaTrophy />,
   },
   {
-    role: "Backend-focused Developer",
-    project: "Electric Charger System",
-    period: "2023 - 2025",
-    summary:
-      "Designed safer stock workflows with data integrity controls and transaction locking strategies.",
-    tags: ["Laravel", "Locking", "Data Integrity"],
+    label: "Team Context",
+    value: "Onboarding Support",
+    detail: "Explained business logic, workflows, and project-specific implementation details.",
+    icon: <FaUser />,
+  },
+];
+
+const credentialGroups: CredentialGroup[] = [
+  {
+    title: "Education",
+    icon: <FaGraduationCap />,
+    items: [
+      {
+        title: "Bachelor of Software Engineering",
+        meta: "Ton Duc Thang University | Sep 2019 - Sep 2023",
+        detail: "Major: Software Engineering. Awards: University Scholarship (2020-2021, 2021-2022, 2022-2023).",
+      },
+    ],
+  },
+  {
+    title: "Certifications",
+    icon: <FaCertificate />,
+    items: [
+      {
+        title: "Web Applications for Everybody Specialization",
+        meta: "University of Michigan",
+      },
+      {
+        title: "HTML, CSS, and JavaScript for Web Developers",
+        meta: "Johns Hopkins University",
+      },
+      {
+        title: "PET B1 Certificate",
+        meta: "Cambridge Assessment English",
+      },
+    ],
+  },
+  {
+    title: "Languages",
+    icon: <FaLanguage />,
+    items: [
+      {
+        title: "English",
+        meta: "PET B1 Certificate | Pass at Grade C | Score 142",
+        detail: "Reading 141, Writing 155, Listening 123, Speaking 150.",
+      },
+      {
+        title: "Japanese",
+        meta: "Currently learning (N5)",
+      },
+    ],
   },
 ];
 
@@ -157,6 +231,43 @@ const achievements = [
 ];
 
 const PortfolioDashboard: React.FC = () => {
+  const [activeSection, setActiveSection] = useState(navItems[0].id);
+
+  useEffect(() => {
+    const sections = navItems
+      .map((item) => document.getElementById(item.id))
+      .filter((section): section is HTMLElement => Boolean(section));
+
+    if (!sections.length) {
+      return undefined;
+    }
+
+    const pickActiveSection = () => {
+      const activationLine = Math.min(window.innerHeight * 0.42, 260);
+      const currentSection =
+        sections.find((section) => {
+          const rect = section.getBoundingClientRect();
+          return rect.top <= activationLine && rect.bottom > activationLine;
+        }) ?? sections.reduce((closest, section) => {
+          const closestDistance = Math.abs(closest.getBoundingClientRect().top - activationLine);
+          const sectionDistance = Math.abs(section.getBoundingClientRect().top - activationLine);
+
+          return sectionDistance < closestDistance ? section : closest;
+        }, sections[0]);
+
+      setActiveSection(currentSection.id);
+    };
+
+    pickActiveSection();
+    window.addEventListener("scroll", pickActiveSection, { passive: true });
+    window.addEventListener("resize", pickActiveSection);
+
+    return () => {
+      window.removeEventListener("scroll", pickActiveSection);
+      window.removeEventListener("resize", pickActiveSection);
+    };
+  }, []);
+
   return (
     <main className="dashboard-shell">
       <aside className="dashboard-sidebar" aria-label="Portfolio navigation">
@@ -166,7 +277,12 @@ const PortfolioDashboard: React.FC = () => {
 
         <nav className="dashboard-nav">
           {navItems.map((item) => (
-            <a href={`#${item.id}`} key={item.id}>
+            <a
+              href={`#${item.id}`}
+              key={item.id}
+              className={activeSection === item.id ? "active" : undefined}
+              aria-current={activeSection === item.id ? "page" : undefined}
+            >
               <span>{item.icon}</span>
               <strong>{item.label}</strong>
             </a>
@@ -223,33 +339,62 @@ const PortfolioDashboard: React.FC = () => {
           <p>Code. Analyze. Improve.</p>
         </article>
 
-        <article className="dashboard-panel about-panel" id="about">
-          <div className="panel-heading">
-            <FaUser />
-            <h2>About Me</h2>
-          </div>
-          <p>
-            I maintain production systems, develop business modules, improve data integrity,
-            analyze query performance, and support clients through root cause analysis.
-          </p>
+        <div className="profile-stack">
+          <article className="dashboard-panel about-panel" id="about">
+            <div className="panel-heading">
+              <FaUser />
+              <h2>About Me</h2>
+            </div>
+            <p>
+              I maintain production systems, develop business modules, improve data integrity,
+              analyze query performance, and support clients through root cause analysis.
+            </p>
 
-          <ul className="contact-facts">
-            <li>
-              <FaMapMarkerAlt />
-              Ho Chi Minh City, Viet Nam
-            </li>
-            <li>
-              <FaEnvelope />
-              <a href="mailto:thaiphan1912@gmail.com">thaiphan1912@gmail.com</a>
-            </li>
-            <li>
-              <FaGithub />
-              <a href="https://github.com/pqthai1912" target="_blank" rel="noopener noreferrer">
-                github.com/pqthai1912
-              </a>
-            </li>
-          </ul>
-        </article>
+            <ul className="contact-facts">
+              <li>
+                <FaMapMarkerAlt />
+                Ho Chi Minh City, Viet Nam
+              </li>
+              <li>
+                <FaEnvelope />
+                <a href="mailto:thaiphan1912@gmail.com">thaiphan1912@gmail.com</a>
+              </li>
+              <li>
+                <FaGithub />
+                <a href="https://github.com/pqthai1912" target="_blank" rel="noopener noreferrer">
+                  github.com/pqthai1912
+                </a>
+              </li>
+            </ul>
+          </article>
+
+          <article className="dashboard-panel credentials-panel" aria-label="Education certifications and languages">
+            <div className="panel-heading">
+              <FaGraduationCap />
+              <h2>Credentials</h2>
+            </div>
+
+            <div className="credential-groups">
+              {credentialGroups.map((group) => (
+                <section className="credential-group" key={group.title}>
+                  <div className="credential-group-heading">
+                    {group.icon}
+                    <h3>{group.title}</h3>
+                  </div>
+                  <div className="credential-items">
+                    {group.items.map((item) => (
+                      <article className="credential-item" key={`${group.title}-${item.title}`}>
+                        <strong>{item.title}</strong>
+                        <span>{item.meta}</span>
+                        {item.detail && <p>{item.detail}</p>}
+                      </article>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+          </article>
+        </div>
 
         <article className="dashboard-panel experience-panel" id="experience">
           <div className="panel-heading spread">
@@ -260,20 +405,45 @@ const PortfolioDashboard: React.FC = () => {
             <a href="#projects">View Cases</a>
           </div>
 
-          <div className="timeline">
-            {experiences.map((item) => (
-              <section className="timeline-item" key={`${item.project}-${item.period}`}>
-                <time>{item.period}</time>
-                <h3>{item.role}</h3>
-                <strong>{item.project}</strong>
-                <p>{item.summary}</p>
-                <div className="mini-tags">
-                  {item.tags.map((tag) => (
-                    <span key={tag}>{tag}</span>
-                  ))}
+          <div className="resume-stack">
+            {workExperienceEntries.map((entry) => (
+              <section className="resume-section" key={entry.title}>
+                <div className="resume-entry">
+                  <div className="resume-entry-header">
+                    <strong>{entry.title}</strong>
+                    <time>{entry.period}</time>
+                  </div>
+
+                  {entry.bullets && (
+                    <ul className="resume-points">
+                      {entry.bullets.map((bullet) => (
+                        <li key={bullet}>{bullet}</li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </section>
             ))}
+          </div>
+
+          <div className="experience-context" aria-label="Experience context">
+            {experienceHighlights.map((item) => (
+              <section className="experience-context-card" key={item.label}>
+                <span>{item.icon}</span>
+                <small>{item.label}</small>
+                <strong>{item.value}</strong>
+                <p>{item.detail}</p>
+              </section>
+            ))}
+          </div>
+
+          <div className="experience-stack-strip" aria-label="Technology stack">
+            <span>Stack</span>
+            <div>
+              {experienceStack.map((item) => (
+                <strong key={item}>{item}</strong>
+              ))}
+            </div>
           </div>
         </article>
 

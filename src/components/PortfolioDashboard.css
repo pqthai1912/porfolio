@@ -64,21 +64,33 @@
 }
 
 .dashboard-nav a {
+  width: 100%;
   min-height: 58px;
   display: grid;
   place-items: center;
   gap: 5px;
+  padding: 6px 2px;
   color: rgba(247, 243, 232, 0.7);
   text-transform: uppercase;
-  font-size: 0.64rem;
+  font-size: 0.58rem;
   font-weight: 800;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  text-align: center;
   transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .dashboard-nav a:hover {
   color: #ffd58b;
   transform: translateY(-2px);
+}
+
+.dashboard-nav a.active {
+  color: #ffd58b;
+}
+
+.dashboard-nav a.active span {
+  filter: drop-shadow(0 0 12px rgba(255, 213, 139, 0.55));
 }
 
 .dashboard-nav span {
@@ -109,7 +121,7 @@
   grid-template-columns: repeat(16, minmax(0, 1fr));
   grid-auto-rows: auto;
   grid-template-areas:
-    "intro intro intro intro intro intro portrait portrait portrait portrait about about about experience experience experience"
+    "intro intro intro intro intro intro portrait portrait portrait about about about experience experience experience experience"
     "projects projects projects projects projects projects projects projects skills skills skills achievement achievement connect connect connect"
     "footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer";
   gap: clamp(12px, 0.8vw, 18px);
@@ -122,6 +134,7 @@
   position: relative;
   min-width: 0;
   overflow: hidden;
+  scroll-margin-top: 20px;
   border: 1px solid rgba(255, 213, 139, 0.18);
   border-radius: 20px;
   background:
@@ -379,15 +392,30 @@
 
 .about-panel,
 .experience-panel,
+.credentials-panel,
 .skills-panel,
 .achievement-panel,
 .connect-panel {
   padding: 24px;
 }
 
-.about-panel {
+.profile-stack {
   grid-area: about;
   min-height: 480px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: clamp(12px, 0.8vw, 18px);
+}
+
+.about-panel {
+  min-height: 0;
+  padding-bottom: 20px;
+}
+
+.credentials-panel {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .experience-panel {
@@ -451,8 +479,8 @@
   position: relative;
   z-index: 1;
   display: grid;
-  gap: 22px;
-  margin-top: 42px;
+  gap: 14px;
+  margin-top: 22px;
 }
 
 .contact-facts li,
@@ -469,65 +497,239 @@
   color: #ffd58b;
 }
 
-.timeline {
+.credential-groups {
   position: relative;
   z-index: 1;
   display: grid;
-  gap: 22px;
+  gap: 10px;
 }
 
-.timeline-item {
-  position: relative;
-  padding-left: 24px;
+.credential-group {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(255, 213, 139, 0.12);
+  border-radius: 14px;
+  background:
+    linear-gradient(145deg, rgba(255, 213, 139, 0.075), transparent 52%),
+    rgba(255, 255, 255, 0.028);
 }
 
-.timeline-item::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 6px;
-  width: 10px;
-  height: 10px;
-  border: 2px solid #ffd58b;
-  border-radius: 50%;
-  box-shadow: 0 0 18px rgba(255, 213, 139, 0.5);
-}
-
-.timeline-item::after {
-  content: "";
-  position: absolute;
-  left: 5px;
-  top: 20px;
-  width: 1px;
-  height: calc(100% + 12px);
-  background: rgba(255, 213, 139, 0.26);
-}
-
-.timeline-item:last-child::after {
-  display: none;
-}
-
-.timeline-item time {
-  display: block;
+.credential-group-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   color: #ffd58b;
-  font-size: 0.75rem;
-  font-weight: 800;
 }
 
-.timeline-item h3 {
-  margin: 8px 0 2px;
-  color: #ffd58b;
-  font-size: 1rem;
-}
-
-.timeline-item strong {
+.credential-group-heading h3 {
+  margin: 0;
   color: #f7f3e8;
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
-.timeline-item p {
-  margin: 8px 0;
+.credential-items {
+  display: grid;
+  gap: 7px;
+}
+
+.credential-item {
+  display: grid;
+  gap: 3px;
+  padding-left: 10px;
+  border-left: 2px solid rgba(255, 213, 139, 0.22);
+}
+
+.credential-item strong {
+  color: #ffd58b;
+  font-size: 0.76rem;
+  line-height: 1.25;
+}
+
+.credential-item span {
   color: rgba(247, 243, 232, 0.7);
-  line-height: 1.58;
+  font-size: 0.68rem;
+  line-height: 1.35;
+}
+
+.credential-item p {
+  margin: 0;
+  color: rgba(247, 243, 232, 0.58);
+  font-size: 0.64rem;
+  line-height: 1.35;
+}
+
+.resume-stack {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 24px;
+}
+
+.resume-section {
+  position: relative;
+  display: grid;
+  gap: 14px;
+}
+
+.resume-entry {
+  padding: 0 2px 2px;
+}
+
+.resume-entry-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.resume-entry-header strong {
+  color: #ffd58b;
+  font-size: clamp(0.96rem, 1vw, 1.1rem);
+  line-height: 1.35;
+}
+
+.resume-entry-header time {
+  flex: 0 0 auto;
+  color: #f0b16d;
+  font-size: clamp(0.82rem, 0.85vw, 0.98rem);
+  font-weight: 900;
+  line-height: 1.35;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.resume-points {
+  display: grid;
+  gap: 8px;
+  margin: 8px 0 0;
+  padding-left: 22px;
+  color: rgba(247, 243, 232, 0.82);
+  font-size: clamp(0.84rem, 0.86vw, 0.98rem);
+  line-height: 1.52;
+}
+
+.resume-points li::marker {
+  color: #ffd58b;
+}
+
+.experience-panel .resume-entry-header {
+  flex-direction: column;
+  gap: 6px;
+}
+
+.experience-panel .resume-entry-header time {
+  text-align: left;
+  white-space: normal;
+}
+
+.experience-panel .resume-points {
+  gap: 7px;
+  font-size: clamp(0.78rem, 0.78vw, 0.92rem);
+  line-height: 1.46;
+}
+
+.experience-panel .resume-points li,
+.experience-context-card p {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+}
+
+.experience-context {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.experience-context-card {
+  min-height: 154px;
+  padding: 14px;
+  border: 1px solid rgba(255, 213, 139, 0.14);
+  border-radius: 14px;
+  background:
+    linear-gradient(160deg, rgba(255, 213, 139, 0.09), transparent 48%),
+    rgba(255, 255, 255, 0.035);
+}
+
+.experience-context-card span {
+  width: 34px;
+  height: 34px;
+  display: inline-grid;
+  place-items: center;
+  margin-bottom: 12px;
+  border: 1px solid rgba(255, 213, 139, 0.2);
+  border-radius: 10px;
+  color: #ffd58b;
+  background: rgba(255, 213, 139, 0.08);
+}
+
+.experience-context-card small {
+  display: block;
+  color: rgba(247, 243, 232, 0.58);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.experience-context-card strong {
+  display: block;
+  margin-top: 6px;
+  color: #ffd58b;
+  font-size: 0.88rem;
+  line-height: 1.25;
+}
+
+.experience-context-card p {
+  margin: 8px 0 0;
+  color: rgba(247, 243, 232, 0.7);
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.experience-stack-strip {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 213, 139, 0.12);
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.experience-stack-strip > span {
+  color: rgba(247, 243, 232, 0.62);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.experience-stack-strip div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.experience-stack-strip strong {
+  padding: 5px 8px;
+  border-radius: 999px;
+  color: #130d05;
+  background: linear-gradient(135deg, #ffd58b, #c8872d);
+  font-size: 0.66rem;
+  font-weight: 900;
+  line-height: 1;
 }
 
 .mini-tags {
@@ -822,7 +1024,7 @@
     align-content: stretch;
     grid-template-rows: auto auto auto;
     grid-template-areas:
-      "intro intro intro intro intro intro intro portrait portrait portrait about about about experience experience experience"
+      "intro intro intro intro intro intro portrait portrait portrait about about about experience experience experience experience"
       "projects projects projects projects projects projects projects projects skills skills skills achievement achievement connect connect connect"
       "footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer";
     gap: clamp(12px, 0.8vw, 18px);
@@ -830,7 +1032,7 @@
 
   .intro-panel,
   .portrait-panel,
-  .about-panel,
+  .profile-stack,
   .experience-panel {
     min-height: clamp(460px, 54vh, 620px);
   }
@@ -934,13 +1136,22 @@
     min-height: 46px;
   }
 
+  .dashboard-nav a.active {
+    background: rgba(255, 213, 139, 0.08);
+    border-radius: 10px;
+  }
+
+  .dashboard-panel {
+    scroll-margin-top: 86px;
+  }
+
   .sidebar-note {
     display: none;
   }
 
   .intro-panel,
   .portrait-panel,
-  .about-panel,
+  .profile-stack,
   .experience-panel,
   .projects-panel,
   .skills-panel,
@@ -948,6 +1159,10 @@
   .connect-panel,
   .dashboard-footer {
     width: 100%;
+  }
+
+  .profile-stack {
+    min-height: 0;
   }
 
   .dashboard-canvas {
@@ -986,6 +1201,7 @@
 
   .intro-panel,
   .about-panel,
+  .credentials-panel,
   .experience-panel,
   .projects-panel,
   .skills-panel,
@@ -1049,6 +1265,10 @@
     letter-spacing: 0;
   }
 
+  .dashboard-panel {
+    scroll-margin-top: 52px;
+  }
+
   .dashboard-nav a strong {
     display: none;
   }
@@ -1064,6 +1284,7 @@
 
   .intro-panel,
   .about-panel,
+  .credentials-panel,
   .experience-panel,
   .projects-panel,
   .skills-panel,
@@ -1199,8 +1420,32 @@
     font-size: 0.92rem;
   }
 
+  .resume-entry-header {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .resume-entry-header time {
+    text-align: left;
+    white-space: normal;
+  }
+
+  .experience-context {
+    grid-template-columns: 1fr;
+    margin-top: 18px;
+  }
+
+  .experience-context-card {
+    min-height: auto;
+  }
+
+  .experience-stack-strip {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
   .project-body p,
-  .timeline-item p,
+  .resume-points,
   .about-panel p,
   .connect-panel p,
   .achievement-panel li {
